@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============ Base Styles ============ */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============ iPhone Frame ============ */
+.iphone-frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  background-color: #121413;
+}
+
+.iphone-screen {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.notch {
+  display: none;
+}
+
+/* ============ Custom Underline ============ */
+.custom-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #D4F05A;
+  opacity: 0.3;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* ============ Input Glow Effect ============ */
+.input-glow {
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.input-glow:focus-within {
+  border-color: #D4F05A !important;
+}
+
+.input-glow:focus-within input {
+  outline: none;
+}
+
+/* ============ Animation Delays ============ */
+.delay-0 { animation-delay: 0ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+
+.animate-slideUp,
+.animate-fadeIn {
+  opacity: 0;
+}
+
+/* ============ Dashboard Styles ============ */
+.glow-pulse {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(181, 221, 61, 0.6)); }
+  50% { opacity: 0.8; transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(181, 221, 61, 0.9)); }
+}
+
+.map-gradient-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(31, 31, 30, 0.85) 0%,
+    rgba(31, 31, 30, 0) 20%,
+    rgba(31, 31, 30, 0) 70%,
+    rgba(31, 31, 30, 0.92) 100%
+  );
+}
+
+.card-stack-effect {
+  position: relative;
+}
+
+.card-stack-effect::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  right: 12px;
+  height: 40px;
+  background: #292A29;
+  border: 1px solid #444936;
+  border-radius: 1.5rem;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+.card-stack-effect::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 24px;
+  right: 24px;
+  height: 40px;
+  background: #1F1F1E;
+  border: 1px solid #343534;
+  border-radius: 1.5rem;
+  z-index: -2;
+  opacity: 0.3;
+}
+
+@keyframes dash-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+.animate-dash-slide {
+  animation: dash-slide 2s infinite;
+}
+
+/* ============ Scrollbar Hide ============ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============ Safe Area ============ */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* ============ Glass Morphism Refinements ============ */
+.glass-surface {
+  background: rgba(31, 31, 30, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(68, 73, 54, 0.3);
+}
+
+.glass-surface-strong {
+  background: rgba(31, 31, 30, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(68, 73, 54, 0.4);
+}
+
+/* ============ Button Press ============ */
+.press-effect {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.press-effect:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* ============ Skeleton Loading ============ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1F1F1E 25%, #292A29 50%, #1F1F1E 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ============ Map Dim Overlay ============ */
+.map-dim-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+/* ============ Driver Marker (Pulsing Green Dot) ============ */
+.map-driver-marker {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.driver-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #B5DD3D;
+  border: 3px solid #1F1F1E;
+  box-shadow: 0 0 8px rgba(181, 221, 61, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+.driver-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border-radius: 50%;
+  border: 2px solid rgba(181, 221, 61, 0.4);
+  animation: map-pulse 2s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes map-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ============ Pickup Pin Marker ============ */
+.map-pickup-marker {
+  position: relative;
+  width: 28px;
+  height: 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.pickup-pin {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pickup-pin-head {
+  width: 20px;
+  height: 20px;
+  border-radius: 50% 50% 50% 0;
+  background: #B5DD3D;
+  transform: rotate(-45deg);
+  border: 2px solid #1F1F1E;
+  box-shadow: 0 2px 8px rgba(181, 221, 61, 0.4);
+}
+
+.pickup-pin-tail {
+  width: 2px;
+  height: 14px;
+  background: rgba(181, 221, 61, 0.6);
+  margin-top: -1px;
+}
+
+.pickup-pulse-ring {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  border-radius: 50%;
+  border: 2px solid rgba(181, 221, 61, 0.25);
+  animation: pickup-pulse 2s ease-out infinite;
+  z-index: 1;
+}
+
+@keyframes pickup-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ============ End Call Shrink Animation ============ */
+@keyframes shrink-to-center {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-shrink-to-center {
+  animation: shrink-to-center 0.35s ease-in-out forwards;
+}
