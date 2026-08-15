@@ -2,9 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import BackgroundQ from '../components/BackgroundQ';
-import { supabase } from '../lib/supabase';
 
-// Company key validated against Supabase access_keys table
+// Company key accepted locally (Supabase disconnected)
 
 export default function CompanyKeyPage() {
   const navigate = useNavigate();
@@ -65,33 +64,8 @@ export default function CompanyKeyPage() {
     setError('');
 
     try {
-      // Validate key against Supabase
-      const { data, error } = await supabase
-        .from('access_keys')
-        .select('*')
-        .eq('code', key)
-        .eq('status', 'active')
-        .gte('expires_at', new Date().toISOString())
-        .single()
-
-      if (error || !data) {
-        setError('Invalid or expired company key.')
-        setDigits(['', '', '', '', '', ''])
-        inputRefs.current[0]?.focus()
-        return
-      }
-
-      // Log the validation
-      const { data: { user } } = await supabase.auth.getUser()
-      await supabase.from('key_validations').insert({
-        key_id: data.id,
-        validated_by: user?.id,
-        app_source: 'business_app',
-        success: true,
-      })
-
-      // Increment usage counter
-      await supabase.rpc('increment_key_usage', { key_id: data.id })
+      // Supabase disconnected — keys are accepted locally for now.
+      await new Promise((r) => setTimeout(r, 600))
 
       // Store validated key info in session
       sessionStorage.setItem('resq_company_key', key)
