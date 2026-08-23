@@ -16,48 +16,146 @@ body {
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FFFFFF;
 }
 
-/* ============ iPhone Frame ============ */
+/* ============ iPhone Device Frame (desktop stage) ============ */
+/* On desktop, the app renders inside a realistic iPhone so it reads as a
+   real product, not a stretched AI demo. On a real phone, media query
+   collapses the frame to full-bleed. */
+.device-stage {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(198, 242, 78, 0.10), transparent 60%),
+    radial-gradient(1000px 500px at 85% 110%, rgba(198, 242, 78, 0.08), transparent 55%),
+    #14161a;
+}
+
 .iphone-frame {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  min-height: 100dvh;
-  margin: 0;
+  width: 393px;              /* iPhone 15 Pro logical width */
+  height: min(852px, calc(100dvh - 56px));
+  border-radius: 54px;
+  background: #000;
+  /* titanium bezel + soft outer shadow */
+  box-shadow:
+    0 0 0 3px #1c1e1a,
+    0 0 0 5px #3a3d36,
+    0 0 0 6px #101210,
+    0 40px 90px rgba(0, 0, 0, 0.75),
+    0 12px 30px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  background-color: #121413;
 }
 
-.iphone-screen {
-  width: 100%;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.notch {
-  display: none;
-}
-
-/* ============ Custom Underline ============ */
-.custom-underline {
-  position: relative;
-  display: inline-block;
-}
-
-.custom-underline::after {
+/* side hardware buttons */
+.iphone-frame::before,
+.iphone-frame::after {
   content: '';
   position: absolute;
-  bottom: 4px;
-  left: 0;
-  width: 100%;
-  height: 8px;
-  background-color: #D4F05A;
-  opacity: 0.3;
+  right: -7px;
+  width: 3px;
   border-radius: 2px;
+  background: #2a2d28;
+  z-index: 0;
+}
+.iphone-frame::before { top: 200px; height: 64px; }   /* power */
+.iphone-frame::after  { top: 290px; height: 40px; }   /* action */
+
+.iphone-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 50px;
+  background-color: #FFFFFF;
+}
+
+/* Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 122px;
+  height: 34px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 60;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+.dynamic-island::after {           /* camera lens */
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1f2b3a 0%, #05070a 60%);
+}
+
+/* Home indicator — dark by default (light theme screens) */
+.home-indicator {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 60;
   pointer-events: none;
+}
+.home-indicator.on-dark { background: rgba(255, 255, 255, 0.85); }
+
+/* On a real phone (narrow touch device), collapse the frame to full-bleed */
+@media (max-width: 480px) {
+  .device-stage { padding: 0; background: #0B0D08; }
+  .iphone-frame {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .iphone-screen { border-radius: 0; }
+  .iphone-frame::before, .iphone-frame::after { display: none; }
+}
+
+.notch { display: none; }
+
+/* Route transition wrapper must fill the device screen */
+.page-transition-root {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.page-transition-root > * { flex: 1 1 auto; min-height: 0; }
+
+/* ============ Custom Underline ============ */
+/* DEPRECATED — the lime highlight bar behind headings was an AI tell.
+   Kept as a no-op so existing markup doesn't break; headings now render clean. */
+.custom-underline {
+  position: static;
+  display: inline;
+}
+.custom-underline::after {
+  content: none;
+  display: none;
 }
 
 /* ============ Input Glow Effect ============ */
@@ -67,7 +165,7 @@ body {
 }
 
 .input-glow:focus-within {
-  border-color: #D4F05A !important;
+  border-color: #C6F24E !important;
 }
 
 .input-glow:focus-within input {
@@ -82,7 +180,6 @@ body {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
 
 .animate-slideUp,
 .animate-fadeIn {
@@ -95,18 +192,64 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(181, 221, 61, 0.6)); }
-  50% { opacity: 0.8; transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(181, 221, 61, 0.9)); }
+  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(198, 242, 78, 0.30)); }
+  50% { opacity: 0.8; transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(198, 242, 78, 0.55)); }
 }
 
 .map-gradient-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(31, 31, 30, 0.85) 0%,
-    rgba(31, 31, 30, 0) 20%,
-    rgba(31, 31, 30, 0) 70%,
-    rgba(31, 31, 30, 0.92) 100%
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 255, 255, 0) 22%,
+    rgba(255, 255, 255, 0) 68%,
+    rgba(255, 255, 255, 0.96) 100%
   );
+}
+
+/* iPhone-style app icon for the RESQ logo */
+.app-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 25.5%;
+  background: linear-gradient(180deg, #D6FA6B 0%, #C6F24E 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.18),
+    0 6px 18px rgba(198, 242, 78, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 60% at 50% 0%,
+    rgba(255, 255, 255, 0.30) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  pointer-events: none;
+}
+
+.app-icon::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 12%;
+  right: 12%;
+  height: 32%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
 }
 
 .card-stack-effect {
@@ -120,11 +263,11 @@ body {
   left: 12px;
   right: 12px;
   height: 40px;
-  background: #292A29;
-  border: 1px solid #444936;
-  border-radius: 1.5rem;
+  background: #FFFFFF;
+  border: 1px solid #EBEBEB;
+  border-radius: 1.75rem;
   z-index: -1;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .card-stack-effect::after {
@@ -134,11 +277,11 @@ body {
   left: 24px;
   right: 24px;
   height: 40px;
-  background: #1F1F1E;
-  border: 1px solid #343534;
-  border-radius: 1.5rem;
+  background: #FAFAFA;
+  border: 1px solid #EBEBEB;
+  border-radius: 1.75rem;
   z-index: -2;
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 @keyframes dash-slide {
@@ -170,19 +313,45 @@ body {
   }
 }
 
-/* ============ Glass Morphism Refinements ============ */
+/* ============ Glass Morphism (V2) ============ */
 .glass-surface {
-  background: rgba(31, 31, 30, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(68, 73, 54, 0.3);
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .glass-surface-strong {
-  background: rgba(31, 31, 30, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(68, 73, 54, 0.4);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Sticky header glass */
+.header-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Floating bottom dock glass */
+.dock-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ============ Grain / Noise Texture ============ */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ============ Button Press ============ */
@@ -202,7 +371,7 @@ body {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #1F1F1E 25%, #292A29 50%, #1F1F1E 75%);
+  background: linear-gradient(90deg, #F0F0F0 25%, #E4E4E4 50%, #F0F0F0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 0.5rem;
@@ -213,11 +382,11 @@ body {
   position: absolute;
   inset: 0;
   z-index: 5;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.30);
   pointer-events: none;
 }
 
-/* ============ Driver Marker (Pulsing Green Dot) ============ */
+/* ============ Driver Marker (Pulsing Rose Dot) ============ */
 .map-driver-marker {
   position: relative;
   width: 32px;
@@ -231,9 +400,9 @@ body {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #B5DD3D;
-  border: 3px solid #1F1F1E;
-  box-shadow: 0 0 8px rgba(181, 221, 61, 0.6);
+  background: #C6F24E;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 10px rgba(198, 242, 78, 0.5);
   position: relative;
   z-index: 2;
 }
@@ -246,7 +415,7 @@ body {
   height: 32px;
   margin: -16px 0 0 -16px;
   border-radius: 50%;
-  border: 2px solid rgba(181, 221, 61, 0.4);
+  border: 2px solid rgba(198, 242, 78, 0.35);
   animation: map-pulse 2s ease-out infinite;
   z-index: 1;
 }
@@ -284,16 +453,16 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50% 50% 50% 0;
-  background: #B5DD3D;
+  background: #C6F24E;
   transform: rotate(-45deg);
-  border: 2px solid #1F1F1E;
-  box-shadow: 0 2px 8px rgba(181, 221, 61, 0.4);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 8px rgba(198, 242, 78, 0.35);
 }
 
 .pickup-pin-tail {
   width: 2px;
   height: 14px;
-  background: rgba(181, 221, 61, 0.6);
+  background: rgba(198, 242, 78, 0.5);
   margin-top: -1px;
 }
 
@@ -305,7 +474,7 @@ body {
   height: 36px;
   margin-left: -18px;
   border-radius: 50%;
-  border: 2px solid rgba(181, 221, 61, 0.25);
+  border: 2px solid rgba(198, 242, 78, 0.30);
   animation: pickup-pulse 2s ease-out infinite;
   z-index: 1;
 }
@@ -335,4 +504,173 @@ body {
 
 .animate-shrink-to-center {
   animation: shrink-to-center 0.35s ease-in-out forwards;
+}
+
+/* ============ V2 Additions ============ */
+
+/* Rose gradient text for hero numbers */
+.text-gradient-lime {
+  background: linear-gradient(135deg, #D6FA6B 0%, #C6F24E 45%, #7FA82E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Soft inner highlight for raised cards */
+.card-inset {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Subtle top highlight border for light cards */
+.hairline-top {
+  position: relative;
+}
+
+.hairline-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(198, 242, 78, 0.35), transparent);
+  pointer-events: none;
+}
+
+/* ============ RESCUE OPS — v2.1 Personality Layer ============ */
+
+/* Display type: Space Grotesk for headings */
+body, .font-display {
+  font-family: 'Space Grotesk', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+}
+.font-mono {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace !important;
+}
+
+/* Tabular LED numerals for money / stats */
+.num-led {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* Kicker label — mono, uppercase, ops feel (no slash prefix) */
+.kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #717171;
+}
+
+/* Blinking block cursor (boot/terminal vibe) */
+.blink-cursor {
+  animation: resq-blink 1.1s steps(2, start) infinite;
+}
+@keyframes resq-blink {
+  to { visibility: hidden; }
+}
+
+/* Hard notched corner (signature RESQ cut) */
+.clip-notch {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+.clip-notch-sm {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+/* Hazard diamond status chip (rotated square) */
+.hazard-diamond {
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Primary CTA — flat solid rose, professional press (no glow, no scale, no offset) */
+.btn-lime {
+  background: #C6F24E;
+  color: #1A2200;
+  transition: filter 0.12s ease;
+}
+.btn-lime:hover { filter: brightness(1.06); }
+.btn-lime:active { filter: brightness(0.85); }
+
+/* Generic press state — subtle brightness dip, no bouncy scale */
+.press { transition: filter 0.12s ease; }
+.press:active { filter: brightness(0.86); }
+
+/* Ghost secondary button — airy Airbnb-style outline */
+.btn-ghost {
+  border: 1.5px solid #DDDDDD;
+  color: #222222;
+  background: #FFFFFF;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.btn-ghost:active {
+  background: rgba(198, 242, 78, 0.15);
+  border-color: rgba(198, 242, 78, 0.35);
+}
+
+/* Stencil watermark wordmark */
+.stencil-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(198, 242, 78, 0.10);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Radar sweep (conic wedge) + rings */
+.radar-sweep {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(198, 242, 78, 0.16), rgba(198, 242, 78, 0.04) 22%, transparent 32%, transparent 100%);
+  animation: resq-radar 3.2s linear infinite;
+  pointer-events: none;
+}
+@keyframes resq-radar {
+  to { transform: rotate(360deg); }
+}
+.radar-ring {
+  position: absolute;
+  border: 1px solid rgba(198, 242, 78, 0.14);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Dispatch ticker tape */
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  padding-right: 3rem;
+  animation: resq-ticker 22s linear infinite;
+  will-change: transform;
+}
+@keyframes resq-ticker {
+  to { transform: translateX(-50%); }
+}
+
+/* Signature page-enter — DEPRECATED: replaced by GSAP PageTransition.
+   Kept as no-op so existing className references don't break. */
+.page-wipe {
+  animation: none;
+}
+@keyframes resq-page-in {
+  from { opacity: 1; }
+  to { opacity: 1; }
 }

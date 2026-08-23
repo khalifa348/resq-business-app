@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RESQ — iPhone Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      padding: 40px 16px;
+      background:
+        radial-gradient(1200px 600px at 50% -10%, rgba(198, 242, 78, 0.07), transparent 60%),
+        radial-gradient(800px 500px at 80% 110%, rgba(198, 242, 78, 0.05), transparent 60%),
+        #0B0C0A;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #A8AE9C;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+    .toolbar .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #C6F24E;
+      box-shadow: 0 0 12px rgba(198, 242, 78, 0.7);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.35; } }
+    .toolbar b { color: #F2F4EE; font-weight: 600; }
+    .toolbar code {
+      background: #171915; border: 1px solid #262A22;
+      padding: 3px 10px; border-radius: 8px;
+      font-size: 12px; color: #D6FA6B;
+    }
+
+    /* ============ iPhone 15 Pro frame ============ */
+    .phone {
+      position: relative;
+      width: 393px;
+      height: 852px;
+      background: linear-gradient(145deg, #2A2E2C 0%, #0D0E0D 45%, #1A1C1B 100%);
+      border-radius: 58px;
+      padding: 10px;
+      box-shadow:
+        0 0 0 2px #000,
+        0 30px 80px rgba(0, 0, 0, 0.75),
+        0 8px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+    .phone::after {
+      /* subtle side highlight */
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 58px;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 48px;
+      overflow: hidden;
+    }
+    .screen iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #0B0C0A;
+    }
+
+    /* Dynamic Island */
+    .island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 37px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 10;
+      box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.06);
+    }
+
+    /* Side buttons */
+    .btn { position: absolute; background: #1E201F; border-radius: 3px; }
+    .btn.power { right: -2px; top: 190px; width: 3px; height: 92px; }
+    .btn.vol-up { left: -2px; top: 160px; width: 3px; height: 62px; }
+    .btn.vol-down { left: -2px; top: 232px; width: 3px; height: 62px; }
+    .btn.mute { left: -2px; top: 304px; width: 3px; height: 34px; }
+
+    .hint { color: #6B7262; font-size: 12px; max-width: 420px; text-align: center; line-height: 1.6; }
+    .hint a { color: #C6F24E; text-decoration: none; }
+    .hint a:hover { text-decoration: underline; }
+
+    /* On a real phone: fullscreen, no frame */
+    @media (max-width: 480px) {
+      body { padding: 0; gap: 0; background: #0B0C0A; justify-content: flex-start; }
+      .phone { width: 100vw; height: 100dvh; border-radius: 0; padding: 0; box-shadow: none; }
+      .phone::after, .btn { display: none; }
+      .screen { border-radius: 0; }
+      .island { display: none; }
+      .toolbar, .hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="dot"></span>
+    <span><b>RESQ Business</b> — live preview · dev server</span>
+    <code>localhost:5200</code>
+  </div>
+
+  <div class="phone">
+    <div class="btn power"></div>
+    <div class="btn vol-up"></div>
+    <div class="btn vol-down"></div>
+    <div class="btn mute"></div>
+    <div class="screen">
+      <div class="island"></div>
+      <iframe src="/" title="RESQ app preview" allow="geolocation"></iframe>
+    </div>
+  </div>
+
+  <div class="hint">
+    Interactive — click inside the phone like a real device.<br />
+    On your real iPhone (same Wi-Fi), open
+    <a href="http://172.20.10.10:5200">http://172.20.10.10:5200</a>
+    (or <a href="http://192.168.110.143:5200">http://192.168.110.143:5200</a>)
+    — or open this page there for fullscreen. <a href="/">Open plain</a> ·
+    <a href="/dashboard">Dashboard</a> · <a href="/jobs">Jobs</a> · <a href="/earnings">Earnings</a>
+  </div>
+</body>
+</html>

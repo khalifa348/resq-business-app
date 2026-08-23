@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import BackgroundQ from '../components/BackgroundQ';
+import { Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { isNightNow } from '../lib/daynight';
 
 export default function SignInPage() {
   const navigate = useNavigate();
   const { signInWithEmail } = useAuth();
+  const isNight = useMemo(() => isNightNow(), []);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,110 +35,142 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="iphone-screen animate-fadeIn" style={{ backgroundColor: '#100F0F' }}>
-      <BackgroundQ />
+    <div className="iphone-screen bg-ink relative">
+      {/* Soft brand backdrop — faint video under a strong light scrim */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover opacity-25"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src={isNight ? '/videos/night.mp4' : '/videos/morning.mp4'} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/90 to-ink" />
 
-      <main className="relative z-10 flex-1 flex flex-col justify-center px-6 pb-12 max-w-md mx-auto w-full safe-area-top">
-        {/* Sign In Heading */}
-        <div className="mb-12 animate-slideUp delay-0">
-          <h1 className="text-5xl font-bold text-[#D4F05A] leading-tight">
-            <span className="custom-underline">Sign in</span>
+      {/* Top bar */}
+      <header className="relative z-10 h-16 px-4 flex items-center safe-area-top">
+        <button
+          onClick={() => navigate('/')}
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-raised border border-line text-text-primary press"
+          aria-label="Back"
+        >
+          <ArrowLeft size={20} />
+        </button>
+      </header>
+
+      <main className="relative z-10 flex-1 flex flex-col px-6 pb-8 overflow-y-auto no-scrollbar">
+        {/* Heading */}
+        <div className="mt-4 mb-8 animate-slideUp delay-0">
+          <span className="text-brand-lime-dark text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
+            AUTH · SIGN IN
+          </span>
+          <h1 className="font-display font-bold tracking-tight text-4xl text-text-primary leading-tight mt-2">
+            Sign in
           </h1>
+          <p className="text-text-secondary text-sm mt-2">
+            Access your rescue dispatch account.
+          </p>
         </div>
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
-          {/* Email Field */}
-          <div className="space-y-2 animate-slideUp delay-100">
-            <label className="text-sm font-medium text-[#71717A]" htmlFor="email">
-              Email
-            </label>
-            <div className="relative flex items-center border-b border-[#71717A] pb-2 transition-all input-glow">
-              <Mail size={20} className="text-[#71717A] mr-3 shrink-0" />
-              <span className="text-[#71717A] mr-2 select-none">|</span>
-              <input
-                className="bg-transparent border-none p-0 w-full text-white placeholder-[#71717A] text-base"
-                id="email"
-                name="email"
-                placeholder="demo@email.com"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+        {/* Card — clean, high-contrast, professional */}
+        <div className="bg-surface-raised border border-line rounded-3xl p-6 shadow-card card-inset animate-slideUp delay-100">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Email */}
+            <div className="space-y-2">
+              <label className="kicker" htmlFor="email">
+                Email
+              </label>
+              <div className="relative flex items-center bg-surface-elevated border border-line rounded-xl px-4 transition-all input-glow">
+                <Mail size={18} className="text-text-muted mr-3 shrink-0" />
+                <input
+                  className="bg-transparent border-none p-0 w-full h-12 text-text-primary placeholder-text-muted text-base focus:outline-none"
+                  id="email"
+                  name="email"
+                  placeholder="name@email.com"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Password Field */}
-          <div className="space-y-2 animate-slideUp delay-200">
-            <label className="text-sm font-medium text-[#71717A]" htmlFor="password">
-              Password
-            </label>
-            <div className="relative flex items-center border-b border-[#71717A] pb-2 transition-all input-glow">
-              <Lock size={20} className="text-[#71717A] mr-3 shrink-0" />
-              <span className="text-[#71717A] mr-2 select-none">|</span>
-              <input
-                className="bg-transparent border-none p-0 w-full text-white placeholder-[#71717A] text-base"
-                id="password"
-                name="password"
-                placeholder="enter your password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+            {/* Password */}
+            <div className="space-y-2">
+              <label className="kicker" htmlFor="password">
+                Password
+              </label>
+              <div className="relative flex items-center bg-surface-elevated border border-line rounded-xl px-4 transition-all input-glow">
+                <Lock size={18} className="text-text-muted mr-3 shrink-0" />
+                <input
+                  className="bg-transparent border-none p-0 w-full h-12 text-text-primary placeholder-text-muted text-base focus:outline-none"
+                  id="password"
+                  name="password"
+                  placeholder="Your password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="ml-2 focus:outline-none press shrink-0"
+                  type="button"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff size={18} className="text-brand-lime-dark" />
+                  ) : (
+                    <Eye size={18} className="text-text-muted" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Remember / Forgot */}
+            <div className="flex items-center justify-between pt-1">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  className="w-4 h-4 rounded border-line bg-surface-elevated accent-[#7FA82E]"
+                  type="checkbox"
+                />
+                <span className="text-xs text-text-secondary">Remember me</span>
+              </label>
+              <a className="text-xs font-semibold text-brand-lime-dark hover:underline" href="#">
+                Forgot password?
+              </a>
+            </div>
+
+            {/* Error */}
+            {error && (
+              <p className="text-danger text-xs text-center animate-slideUp">{error}</p>
+            )}
+
+            {/* Submit */}
+            <div className="pt-2">
               <button
-                className="ml-2 focus:outline-none transition-all"
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                className={`w-full btn-lime font-display rounded-2xl py-3.5 font-bold text-lg press flex items-center justify-center gap-2 ${
+                  loading ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
+                disabled={loading}
+                type="submit"
               >
-                {showPassword ? (
-                  <EyeOff size={20} className="text-[#D4F05A]" />
-                ) : (
-                  <Eye size={20} className="text-[#D4F05A]" />
-                )}
+                {loading && <Loader2 size={20} className="animate-spin" />}
+                {loading ? 'Signing in…' : 'Sign in'}
               </button>
             </div>
-          </div>
+          </form>
+        </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between pt-2 animate-slideUp delay-300">
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <input
-                className="w-4 h-4 rounded border-[#D4F05A] bg-transparent text-[#D4F05A] focus:ring-0 focus:ring-offset-0"
-                type="checkbox"
-              />
-              <span className="text-xs text-[#71717A]">Remember Me</span>
-            </label>
-            <a className="text-xs font-semibold text-[#D4F05A] transition-all hover:underline" href="#">
-              Forgot Password?
-            </a>
-          </div>
-
-          {/* Error message */}
-          {error && (
-            <p className="text-red-400 text-xs text-center animate-slideUp delay-100">{error}</p>
-          )}
-
-          {/* Login Button */}
-          <div className="pt-10 animate-slideUp delay-400">
-            <button
-              className={`w-full font-bold py-4 rounded-xl text-lg transition-all ${
-                loading
-                  ? 'bg-[#D4F05A]/50 text-[#100F0F]/50 cursor-not-allowed'
-                  : 'bg-[#D4F05A] text-[#100F0F] hover:bg-[#c4df4a]'
-              }`}
-              disabled={loading}
-              type="submit"
-            >
-              {loading ? 'Signing in...' : 'Login'}
-            </button>
-          </div>
-        </form>
-
-        {/* Sign up Link */}
-        <div className="pt-10 text-center animate-slideUp delay-500">
-          <p className="text-sm text-gray-400">
+        {/* Sign up link */}
+        <div className="pt-8 text-center animate-slideUp delay-200">
+          <p className="text-sm text-text-secondary">
             Don't have an account?{' '}
-            <Link className="text-[#D4F05A] font-bold transition-all hover:underline" to="/signup">
-              Sign up
+            <Link className="text-brand-lime-dark font-bold hover:underline" to="/signup">
+              Create one
             </Link>
           </p>
         </div>

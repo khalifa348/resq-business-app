@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Navigation,
   Phone,
   MessageCircle,
   ChevronRight,
-  Plus,
-  Minus,
-  Crosshair,
   Clock,
-  MapPin,
   Loader2,
   PhoneOff,
+  User,
 } from 'lucide-react';
 import MapboxMap from '../components/MapboxMap';
 
@@ -25,188 +22,152 @@ export default function ActiveJobPage() {
     setTimeout(() => {
       setConnecting(false);
       navigate('/call');
-    }, 5000);
+    }, 1800);
   };
 
   const handleArrived = () => {
     setArrivedState('loading');
     setTimeout(() => {
       setArrivedState('done');
-      setTimeout(() => {
-        navigate('/job-documentation');
-      }, 2000);
-    }, 1500);
+      setTimeout(() => navigate('/job-documentation'), 1400);
+    }, 1200);
   };
 
   return (
-    <div className="iphone-screen overflow-hidden" style={{ backgroundColor: '#121413' }}>
-      {/* Top Status Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-4 px-4 pointer-events-none">
-        <div className="bg-[#1F1F1E]/85 backdrop-blur-md border border-[#444936] rounded-full px-6 py-3 flex items-center gap-4 pointer-events-auto shadow-2xl">
-          <div className="flex items-center gap-2">
-            <Clock size={18} className="text-[#D0FA58]" />
-            <span className="font-mono text-sm text-[#D0FA58]">4 mins</span>
-          </div>
-          <div className="w-px h-4 bg-[#444936]" />
-          <div className="flex items-center gap-2">
-            <MapPin size={16} className="text-[#C5C9B0]" />
-            <span className="font-mono text-xs text-[#C5C9B0] uppercase tracking-wider">
-              Heading to Pickup
-            </span>
-          </div>
+    <div className="iphone-screen overflow-hidden bg-ink">
+      {/* Floating header — back + ETA, clean and minimal */}
+      <header className="absolute top-0 left-0 right-0 z-40 px-4 pt-14 flex items-center justify-between pointer-events-none">
+        <button
+          onClick={() => navigate('/dashboard')}
+          aria-label="Back to dashboard"
+          className="w-10 h-10 rounded-full bg-surface-raised border border-line shadow-card flex items-center justify-center text-text-primary press pointer-events-auto"
+        >
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div className="flex items-center gap-1.5 bg-surface-raised border border-line shadow-card rounded-full px-4 py-2 pointer-events-auto">
+          <Clock size={15} className="text-brand-lime-dark" />
+          <span className="num-led text-sm font-bold text-text-primary">4 min</span>
+          <span className="text-text-muted text-xs font-medium">to pickup</span>
         </div>
       </header>
 
-      {/* Main Map */}
+      {/* Map */}
       <main className="relative flex-1 w-full h-full overflow-hidden">
-        {/* Mapbox Map */}
         <div className="absolute inset-0 z-0">
           <MapboxMap interactive={false} />
         </div>
 
-        {/* Animated Route Line */}
-        <svg className="absolute inset-0 pointer-events-none z-10 w-full h-full" viewBox="0 0 400 800">
+        {/* Route line */}
+        <svg className="absolute inset-0 pointer-events-none z-10 w-full h-full text-brand-lime" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
           <path
             className="opacity-80"
-            d="M 200,600 L 220,540 L 150,480 L 180,350 L 300,280"
+            d="M 200,620 L 220,540 L 150,480 L 180,350 L 300,260"
             fill="none"
-            stroke="#B5DD3D"
+            stroke="currentColor"
             strokeDasharray="10 6"
             strokeWidth="4"
+            strokeLinecap="round"
           >
-            <animate
-              attributeName="stroke-dashoffset"
-              dur="5s"
-              from="100"
-              repeatCount="indefinite"
-              to="0"
-            />
+            <animate attributeName="stroke-dashoffset" dur="5s" from="100" repeatCount="indefinite" to="0" />
           </path>
-          {/* Destination Marker */}
-          <circle className="animate-pulse" cx="300" cy="280" fill="#B5DD3D" r="12" />
-          <circle cx="300" cy="280" fill="#1F1F1E" r="6" />
+          <circle cx="300" cy="260" fill="currentColor" r="11" />
+          <circle cx="300" cy="260" fill="#FFFFFF" r="5" />
+          {/* Driver dot */}
+          <circle cx="200" cy="620" fill="#FFFFFF" r="12" />
+          <circle cx="200" cy="620" fill="currentColor" r="7" />
         </svg>
-
-        {/* Side Map Controls */}
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
-          <button className="w-12 h-12 bg-[#1F1F1E] border border-[#444936] rounded-full flex items-center justify-center text-[#E3E2E0] hover:bg-[#292A29] shadow-lg transition-colors">
-            <Plus size={20} />
-          </button>
-          <button className="w-12 h-12 bg-[#1F1F1E] border border-[#444936] rounded-full flex items-center justify-center text-[#E3E2E0] hover:bg-[#292A29] shadow-lg transition-colors">
-            <Minus size={20} />
-          </button>
-          <button className="w-12 h-12 bg-[#1F1F1E] border border-[#444936] rounded-full flex items-center justify-center text-[#D0FA58] shadow-lg transition-colors">
-            <Crosshair size={20} />
-          </button>
-        </div>
       </main>
 
-      {/* Bottom Sheet */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center p-4">
-        <div className="w-full max-w-xl bg-[#1F1F1E] rounded-[2rem] border border-[#444936] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden">
-          {/* Handle */}
-          <div className="w-12 h-1 bg-[#444936] rounded-full mx-auto mt-3 mb-1" />
+      {/* Bottom sheet */}
+      <div className="absolute bottom-0 left-0 right-0 z-40 p-4 pb-6">
+        <div className="w-full bg-surface-raised rounded-3xl border border-line shadow-card card-inset overflow-hidden">
+          <div className="w-11 h-1 bg-line-strong rounded-full mx-auto mt-3" />
 
-          <div className="px-6 pb-8 pt-2">
-            {/* Customer & Vehicle Info */}
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-[#E3E2E0]">Lennert Nijenbijvank</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="bg-[#343534] text-[#C5C9B0] font-mono text-xs px-2 py-0.5 rounded">
-                    Flatbed Towing
-                  </span>
-                  <span className="text-[#8F937C] text-xs">•</span>
-                  <span className="text-[#C5C9B0] text-sm">Silver Toyota Camry</span>
+          <div className="px-5 pb-5 pt-4">
+            {/* Customer + plate */}
+            <div className="flex justify-between items-start mb-5">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 rounded-2xl bg-surface-elevated border border-line flex items-center justify-center shrink-0">
+                  <User size={22} className="text-text-secondary" />
+                </div>
+                <div className="min-w-0">
+                  <h2 className="text-lg font-bold text-text-primary tracking-tight truncate">Lennert Nijenbijvank</h2>
+                  <p className="text-text-secondary text-xs mt-0.5">Silver Toyota Camry · Flatbed tow</p>
                 </div>
               </div>
-              <div className="bg-[#292A29] border border-[#444936] rounded-xl px-3 py-1 text-center">
-                <span className="font-mono text-sm text-[#D0FA58] block">ABC-1234</span>
-                <span className="text-[10px] uppercase text-[#C5C9B0] tracking-widest">Plate</span>
+              <div className="bg-surface-elevated border border-line rounded-lg px-2.5 py-1.5 text-center shrink-0">
+                <span className="font-mono text-xs font-bold text-text-primary block leading-none">ABC-1234</span>
               </div>
             </div>
 
-            {/* Action Grid */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              <button className="flex flex-col items-center justify-center gap-2 bg-[#B5DD3D] text-[#283500] h-20 rounded-2xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-[#B5DD3D]/10">
-                <Navigation size={28} />
-                <span className="font-mono text-xs">Navigate</span>
+            {/* Quick actions */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <button className="btn-lime flex flex-col items-center justify-center gap-1.5 h-[68px] rounded-2xl press">
+                <Navigation size={22} />
+                <span className="text-[11px] font-semibold">Navigate</span>
               </button>
               <button
                 onClick={handleCall}
                 disabled={connecting}
-                className="flex flex-col items-center justify-center gap-2 bg-[#292A29] border border-[#444936] text-[#E3E2E0] h-20 rounded-2xl hover:bg-[#343534] active:scale-95 transition-all"
+                className="flex flex-col items-center justify-center gap-1.5 bg-surface-elevated border border-line text-text-primary h-[68px] rounded-2xl press"
               >
-                <Phone size={28} />
-                <span className="font-mono text-xs">Call</span>
+                <Phone size={22} />
+                <span className="text-[11px] font-semibold">Call</span>
               </button>
               <button
                 onClick={() => navigate('/message')}
-                className="flex flex-col items-center justify-center gap-2 bg-[#292A29] border border-[#444936] text-[#E3E2E0] h-20 rounded-2xl hover:bg-[#343534] active:scale-95 transition-all"
+                className="flex flex-col items-center justify-center gap-1.5 bg-surface-elevated border border-line text-text-primary h-[68px] rounded-2xl press"
               >
-                <MessageCircle size={28} />
-                <span className="font-mono text-xs">Message</span>
+                <MessageCircle size={22} />
+                <span className="text-[11px] font-semibold">Message</span>
               </button>
             </div>
 
-            {/* Main Primary Action */}
+            {/* Primary action */}
             <button
               onClick={handleArrived}
               disabled={arrivedState !== 'idle'}
-              className={`w-full text-lg font-bold h-16 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-xl ${
+              className={`w-full text-base font-bold h-14 rounded-full flex items-center justify-center gap-2 press ${
                 arrivedState === 'idle'
-                  ? 'bg-[#D0FA58] text-[#283500] active:scale-[0.98] hover:brightness-105 shadow-[#D0FA58]/20'
+                  ? 'btn-lime'
                   : arrivedState === 'loading'
-                    ? 'bg-[#D0FA58]/70 text-[#283500]/70 cursor-not-allowed'
-                    : 'bg-green-600 text-white cursor-default'
+                    ? 'bg-brand-lime/40 text-text-muted cursor-not-allowed'
+                    : 'bg-ok text-white cursor-default'
               }`}
             >
               {arrivedState === 'idle' && (
                 <>
-                  <span>Arrived at Pickup</span>
-                  <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                  <span>Arrived at pickup</span>
+                  <ChevronRight size={20} />
                 </>
               )}
               {arrivedState === 'loading' && (
                 <>
-                  <Loader2 size={22} className="animate-spin" />
-                  <span>Processing...</span>
+                  <Loader2 size={20} className="animate-spin" />
+                  <span>Confirming…</span>
                 </>
               )}
-              {arrivedState === 'done' && (
-                <>
-                  <span>✓ Arrived! Returning to dashboard...</span>
-                </>
-              )}
+              {arrivedState === 'done' && <span>Confirmed</span>}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Connecting Overlay - Shows Lottie animation for 5s when Call is pressed */}
+      {/* Connecting overlay */}
       {connecting && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#121413]">
-          <div className="flex flex-col items-center gap-6">
-            <dotlottie-wc
-              src="https://lottie.host/5a85d534-cce9-4217-98f7-cb5522daf3a6/rPhKEWlGzp.lottie"
-              style={{ width: '160px', height: '160px' }}
-              autoplay
-              loop
-            />
-            <p className="font-mono text-sm text-[#C5C9B0] animate-pulse">
-              Connecting...
-            </p>
-            <div className="flex flex-col items-center gap-1">
-              <button
-                onClick={() => {
-                  setConnecting(false);
-                }}
-                className="w-16 h-16 rounded-full bg-[#93000A] text-[#FFDAD6] flex items-center justify-center shadow-lg hover:brightness-110 active:scale-90 transition-all border-4 border-[#121413]"
-              >
-                <PhoneOff size={28} />
-              </button>
-              <span className="font-mono text-[10px] text-[#8F937C]">Cancel</span>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95">
+          <div className="flex flex-col items-center gap-5">
+            <div className="w-20 h-20 rounded-full bg-surface-elevated border border-line flex items-center justify-center">
+              <Phone size={30} className="text-brand-lime-dark animate-pulse" />
             </div>
+            <p className="text-text-secondary text-sm">Calling Lennert…</p>
+            <button
+              onClick={() => setConnecting(false)}
+              className="w-14 h-14 rounded-full bg-danger text-white flex items-center justify-center press"
+              aria-label="Cancel call"
+            >
+              <PhoneOff size={24} />
+            </button>
           </div>
         </div>
       )}

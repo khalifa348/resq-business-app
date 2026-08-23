@@ -2,11 +2,16 @@ export default function BackgroundQ() {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
       {/* Dark base gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] to-[#100F0F]" />
-      {/* Glow orbs */}
-      <div className="absolute top-10 right-8 w-40 h-40 bg-[#D4F05A] rounded-full opacity-[0.06] blur-3xl" />
-      <div className="absolute bottom-20 left-6 w-52 h-52 bg-[#D4F05A] rounded-full opacity-[0.04] blur-[80px]" />
-      <div className="absolute top-1/3 left-1/3 w-24 h-24 bg-[#D4F05A] rounded-full opacity-[0.03] blur-[60px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F7F7F7] to-[#FFFFFF]" />
+      {/* Glow orbs — lime, softer and wider */}
+      <div className="absolute top-8 right-6 w-56 h-56 bg-[#C6F24E] rounded-full opacity-[0.07] blur-[90px]" />
+      <div className="absolute bottom-24 left-4 w-64 h-64 bg-[#9CC93C] rounded-full opacity-[0.05] blur-[100px]" />
+      {/* Stencil watermark */}
+      <div className="absolute -bottom-10 -left-6 select-none pointer-events-none">
+        <span className="stencil-mark text-[170px]">RESQ</span>
+      </div>
+      {/* Grain texture */}
+      <div className="grain-overlay" />
     </div>
   );
 }

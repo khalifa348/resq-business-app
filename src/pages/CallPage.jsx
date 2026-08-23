@@ -59,11 +59,11 @@ export default function CallPage() {
   };
 
   return (
-    <div className="iphone-screen" style={{ backgroundColor: '#121413' }}>
+    <div className="iphone-screen page-wipe bg-ink">
       {/* Status Bar */}
       <div className="flex justify-between items-center px-8 pt-4 pb-2 z-10">
-        <span className="font-mono text-sm text-[#E3E2E0]">9:41</span>
-        <div className="flex gap-2 text-[#E3E2E0]">
+        <span className="font-mono text-sm text-text-primary">9:41</span>
+        <div className="flex gap-2 text-text-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2L2 22z"/></svg>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
@@ -76,18 +76,19 @@ export default function CallPage() {
         <div className="flex flex-col items-center w-full mt-8">
           {/* Avatar with Glow */}
           <div className="relative group">
-            <div className="absolute -inset-1 bg-[#D0FA58]/20 rounded-full blur-xl group-hover:bg-[#D0FA58]/30 transition-all" />
-            <div className="relative w-40 h-40 rounded-full border-2 border-[#B5DD3D] overflow-hidden bg-[#292A29] shadow-xl flex items-center justify-center">
-              <User size={60} className="text-[#C5C9B0]" />
+            <div className="absolute -inset-1 bg-brand-lime/20 rounded-full blur-xl group-hover:bg-brand-lime/30 transition-all" />
+            <div className="relative w-40 h-40 rounded-full border-2 border-brand-lime overflow-hidden bg-surface-elevated shadow-card flex items-center justify-center">
+              <User size={60} className="text-text-secondary" />
             </div>
           </div>
 
           <div className="mt-8 text-center">
-            <h1 className="text-2xl font-bold text-[#E3E2E0]">Lennert Nijenbijvank</h1>
-            <p className="font-mono text-sm text-[#C5C9B0] flex items-center justify-center gap-2 mt-2">
+            <span className="text-brand-lime text-[10px] font-mono uppercase tracking-[0.3em]">LIVE OPS · ACTIVE CALL</span>
+            <h1 className="font-display text-2xl font-bold text-text-primary mt-1">Lennert Nijenbijvank</h1>
+            <p className="font-mono text-sm text-text-secondary flex items-center justify-center gap-2 mt-2">
               <span>Mobile</span>
-              <span className="w-1 h-1 bg-[#444936] rounded-full" />
-              <span className="text-[#D0FA58] font-bold">{timerStr}</span>
+              <span className="w-1 h-1 bg-line rounded-full" />
+              <span className="text-brand-lime font-bold">{timerStr}</span>
             </p>
           </div>
         </div>
@@ -108,19 +109,22 @@ export default function CallPage() {
                 }`}
               >
                 <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${
+                  className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all ${
                     btn.disabled
-                      ? 'bg-[#343534] border border-[#444936]'
+                      ? 'bg-surface-elevated border border-line'
                       : isActive
-                        ? 'bg-[#B5DD3D] text-[#283500] shadow-[0_0_15px_rgba(181,221,61,0.3)] active:scale-95'
-                        : 'bg-[#343534] border border-[#444936] text-[#E3E2E0] active:scale-95 hover:bg-[#474745]'
+                        ? 'bg-brand-lime text-on-primary  press'
+                        : 'bg-surface-raised border border-line text-text-primary press hover:bg-surface-bright'
                   }`}
                 >
                   <Icon size={28} />
+                  {isActive && !btn.disabled && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-brand-lime-bright animate-pulse " />
+                  )}
                 </div>
                 <span
                   className={`font-mono text-[10px] ${
-                    isActive ? 'text-[#D0FA58]' : 'text-[#C5C9B0]'
+                    isActive ? 'text-brand-lime' : 'text-text-secondary'
                   }`}
                 >
                   {btn.label}
@@ -135,7 +139,7 @@ export default function CallPage() {
           <button
             onClick={handleEndCall}
             disabled={isEnding}
-            className={`w-20 h-20 rounded-full bg-[#93000A] text-[#FFDAD6] flex items-center justify-center shadow-lg hover:brightness-110 active:scale-90 transition-all border-4 border-[#121413] ${
+            className={`w-20 h-20 rounded-full bg-danger text-white flex items-center justify-center  press transition-all border-4 border-ink ${
               isEnding ? 'animate-shrink-to-center pointer-events-none' : ''
             }`}
           >
@@ -148,9 +152,9 @@ export default function CallPage() {
       <div className="fixed top-2 left-1/2 -translate-x-1/2 w-[120px] h-[34px] bg-black rounded-full z-[60]" />
 
       {/* Call Indicator */}
-      <div className="fixed top-12 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[#1b1c1b] border border-[#444936] rounded-full flex items-center gap-2 z-20 backdrop-blur-md">
-        <div className="w-2 h-2 bg-[#D0FA58] rounded-full animate-pulse" />
-        <span className="font-mono text-xs text-[#E3E2E0]">Ongoing Service Call</span>
+      <div className="fixed top-12 left-1/2 -translate-x-1/2 px-4 py-1.5 glass-surface rounded-full flex items-center gap-2 z-20">
+        <div className="w-2 h-2 bg-brand-lime rounded-full animate-pulse" />
+        <span className="font-mono text-xs text-text-primary">Ongoing Service Call</span>
       </div>
     </div>
   );

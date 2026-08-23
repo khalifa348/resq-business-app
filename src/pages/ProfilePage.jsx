@@ -2,11 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import defaultLogo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import {
-  ClipboardList,
-  Map,
-  DollarSign,
   User,
-  ArrowLeft,
   Settings,
   Camera,
   LogOut,
@@ -17,8 +13,11 @@ import {
   Save,
   X,
   CheckCircle,
+  ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import PageHeader from '../components/PageHeader';
+import BottomNav from '../components/BottomNav';
 
 const APP_VERSION = '1.0.0';
 
@@ -122,57 +121,49 @@ export default function ProfilePage() {
   const current = editing ? editForm : profile;
 
   return (
-    <div className="iphone-screen overflow-y-auto" style={{ backgroundColor: '#121413' }}>
-      {/* Top App Bar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#121413] h-16 flex justify-between items-center px-6 border-b border-[#444936] safe-area-top">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-[#292A29] flex items-center justify-center hover:bg-[#343534] transition-colors"
-          >
-            <ArrowLeft size={20} className="text-[#E3E2E0]" />
-          </button>
-          <span className="text-[#C5C9B0] opacity-50 mx-1">/</span>
-          <span className="text-[#E3E2E0] font-mono uppercase tracking-widest text-sm">Profile</span>
-        </div>
-        <div className="flex items-center gap-4">
-          {!editing ? (
+    <div className="iphone-screen page-wipe overflow-y-auto bg-ink">
+      <PageHeader
+        title="Profile"
+        right={
+          !editing ? (
             <button
               onClick={handleEditStart}
-              className="w-10 h-10 rounded-full bg-[#292A29] flex items-center justify-center hover:bg-[#343534] transition-colors"
+              aria-label="Edit profile"
+              className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime transition-all press hover:bg-surface-bright"
             >
-              <Settings size={18} className="text-[#D0FA58]" />
+              <Settings size={18} />
             </button>
           ) : (
             <button
               onClick={handleEditCancel}
-              className="w-10 h-10 rounded-full bg-[#292A29] flex items-center justify-center hover:bg-[#343534] transition-colors"
+              aria-label="Cancel edit"
+              className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-text-secondary transition-all press hover:bg-surface-bright"
             >
-              <X size={18} className="text-[#C5C9B0]" />
+              <X size={18} />
             </button>
-          )}
-        </div>
-      </header>
+          )
+        }
+      />
 
       {/* Saved Notification */}
       {saved && (
         <div className="fixed top-20 left-4 right-4 z-50 animate-slideUp">
-          <div className="bg-[#B5DD3D]/10 border border-[#B5DD3D]/30 rounded-xl px-4 py-3 flex items-center gap-3 backdrop-blur-sm">
-            <CheckCircle size={18} className="text-[#D0FA58]" />
-            <span className="font-mono text-sm text-[#D0FA58]">Profile saved successfully!</span>
+          <div className="glass-surface-strong border border-brand-lime/30 rounded-2xl px-4 py-3 flex items-center gap-3">
+            <CheckCircle size={18} className="text-brand-lime" />
+            <span className="font-mono text-sm text-brand-lime">Profile saved successfully!</span>
           </div>
         </div>
       )}
 
-      <main className="mt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">
-        {/* Company Logo / Avatar Section */}
-        <section className="flex flex-col items-center">
+      <main className="pt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">
+        {/* Company Header Card */}
+        <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-6 flex flex-col items-center">
           <div className="relative group">
             <div
-              className={`w-28 h-28 rounded-2xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all duration-300 cursor-pointer ${
+              className={`w-24 h-24 rounded-2xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all duration-300 cursor-pointer ${
                 current.companyLogo
-                  ? 'border-[#B5DD3D] bg-[#2A2A28]'
-                  : 'border-[#444936] bg-[#2A2A28] hover:border-[#D0FA58]'
+                  ? 'border-brand-lime bg-surface-elevated'
+                  : 'border-line-strong bg-surface-elevated hover:border-brand-lime'
               }`}
               onClick={triggerLogoUpload}
             >
@@ -183,8 +174,8 @@ export default function ProfilePage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex flex-col items-center text-[#C5C9B0] group-hover:text-[#D0FA58] transition-colors">
-                  <Building2 size={36} />
+                <div className="flex flex-col items-center text-text-secondary group-hover:text-brand-lime transition-colors">
+                  <Building2 size={32} />
                   <span className="font-mono text-[10px] mt-1">LOGO</span>
                 </div>
               )}
@@ -194,14 +185,14 @@ export default function ProfilePage() {
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
               <button
                 onClick={triggerLogoUpload}
-                className="w-9 h-9 rounded-full bg-[#B5DD3D] text-[#283500] flex items-center justify-center shadow-lg hover:brightness-110 active:scale-90 transition-all"
+                className="w-9 h-9 rounded-full bg-brand-lime text-[#FFFFFF] flex items-center justify-center  hover:brightness-110 press transition-all"
               >
                 <Camera size={16} />
               </button>
               {current.companyLogo && (
                 <button
                   onClick={removeLogo}
-                  className="w-9 h-9 rounded-full bg-[#93000A]/20 text-[#FFB4AB] flex items-center justify-center shadow-lg hover:bg-[#93000A]/40 active:scale-90 transition-all"
+                  className="w-9 h-9 rounded-full bg-danger/20 text-danger flex items-center justify-center shadow-lg hover:bg-danger/40 press transition-all"
                 >
                   <X size={16} />
                 </button>
@@ -216,16 +207,20 @@ export default function ProfilePage() {
               onChange={handleLogoUpload}
             />
           </div>
-          <p className="font-mono text-[10px] text-[#C5C9B0]/40 mt-4">
+
+          <p className="text-text-primary font-bold text-lg mt-5">{current.driverName}</p>
+          <p className="font-mono text-[11px] text-text-muted uppercase tracking-wider mt-1">{current.companyName}</p>
+
+          <p className="font-mono text-[10px] text-text-muted mt-4">
             Tap the logo area or camera icon to upload
           </p>
         </section>
 
         {/* Profile Details Card */}
-        <section className="bg-[#2A2A28]/80 backdrop-blur-md border border-[#353533] rounded-xl overflow-hidden">
-          <div className="p-5 border-b border-[#444936]/20">
-            <p className="font-mono text-[10px] text-[#C5C9B0]/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Building2 size={12} className="text-[#D0FA58]" />
+        <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line overflow-hidden divide-y divide-line">
+          <div className="p-5">
+            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Building2 size={12} className="text-brand-lime" />
               Company Name
             </p>
             {editing ? (
@@ -233,17 +228,17 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.companyName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, companyName: e.target.value }))}
-                className="w-full bg-[#1F1F1E] border border-[#444936] rounded-lg px-3 py-2 text-[#E3E2E0] font-bold text-base font-mono focus:outline-none focus:border-[#B5DD3D] transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="Your company name"
               />
             ) : (
-              <p className="text-[#E3E2E0] font-bold text-base">{current.companyName}</p>
+              <p className="text-text-primary font-bold text-base">{current.companyName}</p>
             )}
           </div>
 
-          <div className="p-5 border-b border-[#444936]/20">
-            <p className="font-mono text-[10px] text-[#C5C9B0]/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <User size={12} className="text-[#D0FA58]" />
+          <div className="p-5">
+            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <User size={12} className="text-brand-lime" />
               Driver Name
             </p>
             {editing ? (
@@ -251,17 +246,17 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.driverName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, driverName: e.target.value }))}
-                className="w-full bg-[#1F1F1E] border border-[#444936] rounded-lg px-3 py-2 text-[#E3E2E0] font-bold text-base font-mono focus:outline-none focus:border-[#B5DD3D] transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="Your name"
               />
             ) : (
-              <p className="text-[#E3E2E0] font-bold text-base">{current.driverName}</p>
+              <p className="text-text-primary font-bold text-base">{current.driverName}</p>
             )}
           </div>
 
-          <div className="p-5 border-b border-[#444936]/20">
-            <p className="font-mono text-[10px] text-[#C5C9B0]/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Mail size={12} className="text-[#D0FA58]" />
+          <div className="p-5">
+            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Mail size={12} className="text-brand-lime" />
               Email
             </p>
             {editing ? (
@@ -269,17 +264,17 @@ export default function ProfilePage() {
                 type="email"
                 value={editForm.email}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, email: e.target.value }))}
-                className="w-full bg-[#1F1F1E] border border-[#444936] rounded-lg px-3 py-2 text-[#E3E2E0] font-bold text-base font-mono focus:outline-none focus:border-[#B5DD3D] transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="email@example.com"
               />
             ) : (
-              <p className="text-[#C5C9B0] text-sm font-mono">{current.email}</p>
+              <p className="text-text-secondary text-sm font-mono">{current.email}</p>
             )}
           </div>
 
           <div className="p-5">
-            <p className="font-mono text-[10px] text-[#C5C9B0]/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Info size={12} className="text-[#D0FA58]" />
+            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Info size={12} className="text-brand-lime" />
               Phone
             </p>
             {editing ? (
@@ -287,11 +282,11 @@ export default function ProfilePage() {
                 type="tel"
                 value={editForm.phone}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, phone: e.target.value }))}
-                className="w-full bg-[#1F1F1E] border border-[#444936] rounded-lg px-3 py-2 text-[#E3E2E0] font-bold text-base font-mono focus:outline-none focus:border-[#B5DD3D] transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="(555) 000-0000"
               />
             ) : (
-              <p className="text-[#C5C9B0] text-sm font-mono">{current.phone}</p>
+              <p className="text-text-secondary text-sm font-mono">{current.phone}</p>
             )}
           </div>
         </section>
@@ -301,10 +296,10 @@ export default function ProfilePage() {
           <button
             onClick={handleEditSave}
             disabled={saving}
-            className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
+            className={`w-full py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${
               saving
-                ? 'bg-[#B5DD3D]/50 text-[#283500]/50 cursor-not-allowed'
-                : 'bg-[#B5DD3D] text-[#283500] active:scale-[0.98] shadow-[#B5DD3D]/20 hover:brightness-105'
+                ? 'bg-brand-lime/50 text-[#FFFFFF]/50 cursor-not-allowed'
+                : 'btn-lime press'
             }`}
           >
             <Save size={20} />
@@ -315,67 +310,43 @@ export default function ProfilePage() {
         )}
 
         {/* App Info */}
-        <section className="bg-[#2A2A28]/60 border border-[#353533] rounded-xl p-5">
+        <section className="bg-surface-raised/60 border border-line rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Shield size={16} className="text-[#D0FA58]" />
-              <span className="font-mono text-xs text-[#C5C9B0] uppercase tracking-wider">App Info</span>
+              <Shield size={16} className="text-brand-lime" />
+              <span className="font-mono text-xs text-text-secondary uppercase tracking-wider">App Info</span>
             </div>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-[#C5C9B0]/60">Version</span>
-              <span className="font-mono text-[12px] text-[#D0FA58]">v{APP_VERSION}</span>
+              <span className="font-mono text-[12px] text-text-muted">Version</span>
+              <span className="font-mono text-[12px] text-brand-lime">v{APP_VERSION}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-[#C5C9B0]/60">App</span>
-              <span className="font-mono text-[12px] text-[#C5C9B0]">RescueFlow</span>
+              <span className="font-mono text-[12px] text-text-muted">App</span>
+              <span className="font-mono text-[12px] text-text-secondary">RescueFlow</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-[#C5C9B0]/60">Company Key</span>
-              <span className="font-mono text-[12px] text-[#C5C9B0]">RF-TOW-001</span>
+              <span className="font-mono text-[12px] text-text-muted">Company Key</span>
+              <span className="font-mono text-[12px] text-text-secondary">RF-TOW-001</span>
             </div>
           </div>
         </section>
 
-        {/* Logout */}
+        {/* Settings Row / Logout */}
         <button
           onClick={handleLogout}
-          className="w-full py-4 rounded-xl border border-[#93000A]/40 text-[#FFB4AB] font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform hover:bg-[#93000A]/10"
+          className="w-full bg-surface-raised border border-line rounded-2xl px-5 py-4 flex items-center justify-between text-danger font-bold press transition-all hover:bg-surface-elevated"
         >
-          <LogOut size={20} />
-          <span className="font-mono text-[14px] tracking-[0.05em]">SIGN OUT</span>
+          <span className="flex items-center gap-3">
+            <LogOut size={20} />
+            <span className="font-mono text-[14px] tracking-[0.05em]">SIGN OUT</span>
+          </span>
+          <ChevronRight size={18} className="text-danger/60" />
         </button>
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#121413] border-t border-[#444936] safe-area-bottom">
-        <button
-          onClick={() => navigate('/jobs')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <ClipboardList size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Jobs</span>
-        </button>
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <Map size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Map</span>
-        </button>
-        <button
-          onClick={() => navigate('/earnings')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <DollarSign size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Earnings</span>
-        </button>
-        <button className="flex flex-col items-center justify-center bg-[#B5DD3D] text-[#283500] rounded-xl px-4 py-1 active:scale-95 transition-transform">
-          <User size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Profile</span>
-        </button>
-      </nav>
+      <BottomNav active="profile" />
     </div>
   );
 }

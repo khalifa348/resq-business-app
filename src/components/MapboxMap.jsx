@@ -82,7 +82,7 @@ export default function MapboxMap({
             'line-cap': 'round',
           },
           paint: {
-            'line-color': '#B5DD3D',
+            'line-color': '#C6F24E',
             'line-width': 6,
             'line-opacity': 0.3,
             'line-blur': 6,
@@ -98,7 +98,7 @@ export default function MapboxMap({
             'line-cap': 'round',
           },
           paint: {
-            'line-color': '#B5DD3D',
+            'line-color': '#C6F24E',
             'line-width': 3,
             'line-opacity': 0.9,
           },
@@ -114,7 +114,7 @@ export default function MapboxMap({
             'line-cap': 'round',
           },
           paint: {
-            'line-color': '#D4F05A',
+            'line-color': '#D6FA6B',
             'line-width': 1.5,
             'line-opacity': 0.6,
             'line-dasharray': [0, 4, 3],

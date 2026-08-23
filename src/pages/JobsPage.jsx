@@ -1,15 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
+import BottomNav from '../components/BottomNav';
 import {
-  ClipboardList,
-  Map,
-  DollarSign,
-  User,
   CheckCircle,
-  ArrowLeft,
-  Truck,
   Clock,
   MapPin,
   Star,
+  DollarSign,
 } from 'lucide-react';
 
 const ALL_JOBS = [
@@ -28,58 +24,44 @@ const totalRatings = ALL_JOBS.reduce((sum, job) => sum + job.rating, 0);
 const avgRating = (totalRatings / ALL_JOBS.length).toFixed(1);
 
 export default function JobsPage() {
-  const navigate = useNavigate();
-
   return (
-    <div className="iphone-screen overflow-y-auto" style={{ backgroundColor: '#121413' }}>
-      {/* Top App Bar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#121413] h-16 flex justify-between items-center px-6 border-b border-[#444936] safe-area-top">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-[#292A29] flex items-center justify-center hover:bg-[#343534] transition-colors"
-          >
-            <ArrowLeft size={20} className="text-[#E3E2E0]" />
-          </button>
-          <span className="text-[#C5C9B0] opacity-50 mx-1">/</span>
-          <span className="text-[#E3E2E0] font-mono uppercase tracking-widest text-sm">Jobs History</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Truck size={22} className="text-[#D0FA58]" />
-        </div>
-      </header>
+    <div className="iphone-screen page-wipe overflow-y-auto bg-ink">
+      <PageHeader
+        title="Jobs History"
+        code="OPS-01"
+      />
 
-      <main className="mt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">
+      <main className="pt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">
         {/* Summary Cards */}
         <section className="grid grid-cols-2 gap-3">
-          <div className="bg-[#2A2A28]/80 backdrop-blur-md border border-[#353533] p-5 rounded-xl">
-            <p className="font-mono text-[10px] text-[#C5C9B0] uppercase tracking-wider">Total Revenue</p>
-            <h2 className="text-3xl font-bold text-[#D0FA58] mt-1">${totalEarnings.toFixed(2)}</h2>
+          <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
+            <span className="kicker">Total Revenue</span>
+            <h2 className="num-led text-3xl text-gradient-lime mt-1">${totalEarnings.toFixed(2)}</h2>
             <div className="flex items-center gap-1 mt-2">
-              <DollarSign size={12} className="text-[#B5DD3D]" />
-              <span className="font-mono text-[10px] text-[#C5C9B0]/60">All time earnings</span>
+              <DollarSign size={12} className="text-brand-lime-dim" />
+              <span className="font-mono text-[10px] text-text-muted">All time earnings</span>
             </div>
           </div>
-          <div className="bg-[#2A2A28]/80 backdrop-blur-md border border-[#353533] p-5 rounded-xl">
-            <p className="font-mono text-[10px] text-[#C5C9B0] uppercase tracking-wider">Jobs Done</p>
-            <h2 className="text-3xl font-bold text-[#E3E2E0] mt-1">{ALL_JOBS.length}</h2>
+          <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
+            <span className="kicker">Jobs Done</span>
+            <h2 className="num-led text-3xl text-text-primary mt-1">{ALL_JOBS.length}</h2>
             <div className="flex items-center gap-1 mt-2">
-              <CheckCircle size={12} className="text-[#B5DD3D]" />
-              <span className="font-mono text-[10px] text-[#C5C9B0]/60">Completed jobs</span>
+              <CheckCircle size={12} className="text-brand-lime-dim" />
+              <span className="font-mono text-[10px] text-text-muted">Completed jobs</span>
             </div>
           </div>
         </section>
 
         {/* Rating & Performance */}
-        <section className="bg-[#2A2A28]/80 backdrop-blur-md border border-[#353533] p-5 rounded-xl">
+        <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[#343534] flex items-center justify-center border border-[#444936]">
-                <Star size={24} className="text-[#D0FA58] fill-[#D0FA58]" />
+              <div className="w-12 h-12 clip-notch-sm bg-surface-elevated border border-line flex items-center justify-center">
+                <Star size={24} className="text-brand-lime fill-brand-lime" />
               </div>
               <div>
-                <p className="text-xl font-bold text-[#E3E2E0]">{avgRating}</p>
-                <p className="font-mono text-[10px] text-[#C5C9B0]/60 uppercase tracking-wider">Average Rating</p>
+                <p className="num-led text-xl text-text-primary">{avgRating}</p>
+                <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Average Rating</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -88,7 +70,7 @@ export default function JobsPage() {
                   <Star
                     key={star}
                     size={14}
-                    className={star <= Math.round(Number(avgRating)) ? 'text-[#D0FA58] fill-[#D0FA58]' : 'text-[#444936]'}
+                    className={star <= Math.round(Number(avgRating)) ? 'text-brand-lime fill-brand-lime' : 'text-line-strong'}
                   />
                 ))}
               </div>
@@ -99,54 +81,54 @@ export default function JobsPage() {
         {/* All Jobs List */}
         <section className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="font-mono text-xs text-[#C5C9B0] uppercase tracking-wider">All Completed Jobs</h3>
-            <span className="font-mono text-[10px] text-[#C5C9B0]/40">{ALL_JOBS.length} total</span>
+            <h3 className="font-mono text-xs text-text-secondary uppercase tracking-wider">All Completed Jobs</h3>
+            <span className="font-mono text-[10px] text-text-muted">{ALL_JOBS.length} total</span>
           </div>
 
           <div className="space-y-3">
             {ALL_JOBS.map((job, i) => (
               <div
                 key={i}
-                className="bg-[#1F1F1E]/40 p-4 rounded-xl border border-[#444936]/20 hover:bg-[#292A29] transition-all group"
+                className="bg-surface-raised/60 p-4 rounded-2xl border border-line hover:bg-surface-elevated transition-all group"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-full bg-[#343534] flex items-center justify-center text-[#D0FA58]/70 group-hover:text-[#D0FA58] transition-colors shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime/70 group-hover:text-brand-lime transition-colors shrink-0">
                       <CheckCircle size={20} />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-[#E3E2E0] truncate">{job.name}</p>
+                      <p className="text-sm font-bold text-text-primary truncate">{job.name}</p>
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <div className="flex items-center gap-1">
-                          <Star size={10} className="text-[#D0FA58] fill-[#D0FA58]" />
-                          <span className="text-[10px] font-mono text-[#C5C9B0]">{job.rating}</span>
+                          <Star size={10} className="text-brand-lime fill-brand-lime" />
+                          <span className="text-[10px] font-mono text-text-secondary">{job.rating}</span>
                         </div>
-                        <span className="w-1 h-1 rounded-full bg-[#444936]/30" />
-                        <span className="text-[10px] font-mono text-[#C5C9B0]/60">{job.type}</span>
+                        <span className="w-1 h-1 rounded-full bg-line-strong" />
+                        <span className="text-[10px] font-mono text-text-muted">{job.type}</span>
                       </div>
                     </div>
                   </div>
-                  <p className="font-mono text-sm font-bold text-[#D0FA58] shrink-0 ml-2">${job.amount.toFixed(2)}</p>
+                  <p className="font-mono text-sm font-bold text-brand-lime shrink-0 ml-2">${job.amount.toFixed(2)}</p>
                 </div>
 
                 <div className="flex items-center gap-4 mt-2 pl-[52px]">
                   <div className="flex items-center gap-1">
-                    <Clock size={10} className="text-[#C5C9B0]/40" />
-                    <span className="text-[10px] font-mono text-[#C5C9B0]/60">{job.date} {job.time}</span>
+                    <Clock size={10} className="text-text-muted" />
+                    <span className="text-[10px] font-mono text-text-muted">{job.date} {job.time}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MapPin size={10} className="text-[#C5C9B0]/40" />
-                    <span className="text-[10px] font-mono text-[#C5C9B0]/60">{job.distance}</span>
+                    <MapPin size={10} className="text-text-muted" />
+                    <span className="text-[10px] font-mono text-text-muted">{job.distance}</span>
                   </div>
-                  <span className="ml-auto px-2 py-0.5 rounded bg-[#D0FA58]/10 text-[#D0FA58] text-[10px] uppercase font-mono tracking-tighter">
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-brand-lime/10 text-brand-lime text-[10px] uppercase font-mono tracking-wider">
                     {job.status}
                   </span>
                 </div>
 
                 <div className="mt-2 pl-[52px] flex items-center gap-2">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">{job.vehicle}</span>
-                  <span className="w-px h-3 bg-[#444936]/20" />
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40 uppercase">{job.plate}</span>
+                  <span className="text-[10px] font-mono text-text-muted">{job.vehicle}</span>
+                  <span className="w-px h-3 bg-line" />
+                  <span className="text-[10px] font-mono text-text-muted uppercase">{job.plate}</span>
                 </div>
               </div>
             ))}
@@ -154,34 +136,7 @@ export default function JobsPage() {
         </section>
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#121413] border-t border-[#444936] safe-area-bottom">
-        <button className="flex flex-col items-center justify-center bg-[#B5DD3D] text-[#283500] rounded-xl px-4 py-1 active:scale-95 transition-transform">
-          <ClipboardList size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Jobs</span>
-        </button>
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <Map size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Map</span>
-        </button>
-        <button
-          onClick={() => navigate('/earnings')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <DollarSign size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Earnings</span>
-        </button>
-        <button
-          onClick={() => navigate('/profile')}
-          className="flex flex-col items-center justify-center text-[#C5C9B0] hover:bg-[#343534] transition-colors px-4 py-1 rounded-xl active:scale-95"
-        >
-          <User size={22} />
-          <span className="font-mono text-[10px] mt-0.5">Profile</span>
-        </button>
-      </nav>
+      <BottomNav active="jobs" />
     </div>
   );
 }

@@ -1,307 +1,221 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
 import {
   Search,
   Navigation,
-  Info,
-  CheckCircle,
-  ClipboardList,
-  Map,
-  DollarSign,
-  User,
   Star,
-  Truck,
+  User,
   Loader2,
   X,
   Zap,
   WifiOff,
+  Check,
+  MapPin,
+  Clock,
 } from 'lucide-react';
 import MapboxMap from '../components/MapboxMap';
+import BottomNav from '../components/BottomNav';
+
+gsap.registerPlugin(Draggable);
 
 const CUSTOMERS = [
-  { name: 'Lennert Nijenbijvank', rating: 4.8, reviews: 240, distance: '3.3km', time: '5mins', location: '9130/40 City Cent..' },
-  { name: 'Emma Voss', rating: 4.9, reviews: 187, distance: '1.2km', time: '2mins', location: 'Keskuskatu 12..' },
-  { name: 'Mikko Aaltonen', rating: 4.7, reviews: 312, distance: '5.8km', time: '9mins', location: 'Mannerheimintie 8..' },
-  { name: 'Sofia Lehtinen', rating: 5.0, reviews: 89, distance: '2.1km', time: '4mins', location: 'Bulevardi 15..' },
-  { name: 'Oliver Mäki', rating: 4.6, reviews: 156, distance: '4.5km', time: '7mins', location: 'Hämeentie 33..' },
-  { name: 'Aino Järvinen', rating: 4.9, reviews: 203, distance: '0.8km', time: '1min', location: 'Fredrikinkatu 5..' },
-  { name: 'Elias Korhonen', rating: 4.5, reviews: 94, distance: '6.2km', time: '10mins', location: 'Lönnrotinkatu 20..' },
-  { name: 'Linnea Virtanen', rating: 4.8, reviews: 278, distance: '2.5km', time: '4mins', location: 'Pohjoisesplanadi 3..' },
+  { name: 'Lennert Nijenbijvank', rating: 4.8, reviews: 240, distance: '3.3 km', time: '5 min', location: '9130/40 City Center', fare: '$18.50' },
+  { name: 'Emma Voss', rating: 4.9, reviews: 187, distance: '1.2 km', time: '2 min', location: 'Keskuskatu 12', fare: '$12.00' },
+  { name: 'Mikko Aaltonen', rating: 4.7, reviews: 312, distance: '5.8 km', time: '9 min', location: 'Mannerheimintie 8', fare: '$24.20' },
+  { name: 'Sofia Lehtinen', rating: 5.0, reviews: 89, distance: '2.1 km', time: '4 min', location: 'Bulevardi 15', fare: '$15.75' },
+  { name: 'Oliver Mäki', rating: 4.6, reviews: 156, distance: '4.5 km', time: '7 min', location: 'Hämeentie 33', fare: '$19.40' },
 ];
 
-const SWIPE_THRESHOLD = 80;
+const SWIPE_THRESHOLD = 90;
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [isOnline, setIsOnline] = useState(true);
   const [customerIndex, setCustomerIndex] = useState(0);
   const [acceptState, setAcceptState] = useState('idle');
-  const [swiping, setSwiping] = useState(false);
-  const [swipeX, setSwipeX] = useState(0);
-  const [swipeOpacity, setSwipeOpacity] = useState(1);
   const [goingOnline, setGoingOnline] = useState(false);
-  const swipeStartX = useRef(0);
   const cardRef = useRef(null);
+  const acceptStateRef = useRef('idle');
+  acceptStateRef.current = acceptState;
+
+  const headerRef = useRef(null);
+  const bubbleRef = useRef(null);
+  const markerRef = useRef(null);
+  const navRef = useRef(null);
+  const playedIntro = useRef(false);
 
   const customer = CUSTOMERS[customerIndex % CUSTOMERS.length];
 
   const nextCustomer = useCallback(() => {
     setCustomerIndex((i) => i + 1);
     setAcceptState('idle');
-    setSwipeX(0);
-    setSwipeOpacity(1);
+    if (cardRef.current) gsap.set(cardRef.current, { x: 0, opacity: 1 });
   }, []);
+
+  const dismissCard = useCallback(() => {
+    gsap.to(cardRef.current, {
+      x: -420,
+      opacity: 0,
+      duration: 0.32,
+      ease: 'power2.in',
+      onComplete: () => {
+        nextCustomer();
+        gsap.fromTo(
+          cardRef.current,
+          { x: 48, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
+        );
+      },
+    });
+  }, [nextCustomer]);
+
+  // Entrance choreography
+  useEffect(() => {
+    if (!isOnline || playedIntro.current) return;
+    playedIntro.current = true;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.fromTo(headerRef.current, { y: -48, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45 })
+        .fromTo(markerRef.current, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)' }, '-=0.2')
+        .fromTo(bubbleRef.current, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45 }, '-=0.25')
+        .fromTo(cardRef.current, { y: 100, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'power3.out' }, '-=0.2')
+        .fromTo(navRef.current, { y: 48, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, '-=0.4');
+    });
+    return () => ctx.revert();
+  }, [isOnline]);
+
+  // Swipe physics
+  useEffect(() => {
+    if (!isOnline || !cardRef.current) return;
+    const d = Draggable.create(cardRef.current, {
+      type: 'x',
+      bounds: { minX: -500, maxX: 0 },
+      edgeResistance: 0.78,
+      onDrag() {
+        gsap.set(cardRef.current, { opacity: 1 + this.x / 600 });
+      },
+      onDragEnd() {
+        if (acceptStateRef.current !== 'idle') {
+          gsap.to(cardRef.current, { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' });
+          return;
+        }
+        if (this.x < -SWIPE_THRESHOLD) {
+          dismissCard();
+        } else {
+          gsap.to(cardRef.current, { x: 0, opacity: 1, duration: 0.7, ease: 'elastic.out(1, 0.6)' });
+        }
+      },
+    });
+    return () => d[0].kill();
+  }, [isOnline, customerIndex, dismissCard]);
 
   const handleGoOnline = () => {
     setGoingOnline(true);
     setTimeout(() => {
+      playedIntro.current = false;
       setIsOnline(true);
       setGoingOnline(false);
     }, 1200);
   };
 
-  const handleTouchStart = (e) => {
-    if (acceptState !== 'idle') return;
-    swipeStartX.current = e.touches[0].clientX;
-    setSwiping(true);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!swiping || acceptState !== 'idle') return;
-    const dx = e.touches[0].clientX - swipeStartX.current;
-    if (dx < 0) {
-      setSwipeX(dx);
-      setSwipeOpacity(1 + dx / 500);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (!swiping) return;
-    setSwiping(false);
-    if (swipeX < -SWIPE_THRESHOLD) {
-      setSwipeX(-400);
-      setSwipeOpacity(0);
-      setTimeout(nextCustomer, 200);
-    } else {
-      setSwipeX(0);
-      setSwipeOpacity(1);
-    }
-  };
-
-  const handleMouseDown = (e) => {
-    if (acceptState !== 'idle') return;
-    swipeStartX.current = e.clientX;
-    setSwiping(true);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!swiping || acceptState !== 'idle') return;
-    const dx = e.clientX - swipeStartX.current;
-    if (dx < 0) {
-      setSwipeX(dx);
-      setSwipeOpacity(1 + dx / 500);
-    }
-  };
-
-  const handleMouseUp = () => {
-    handleTouchEnd();
-  };
-
   useEffect(() => {
     if (acceptState === 'accepted') {
-      const timer = setTimeout(() => {
-        navigate('/active-job');
-      }, 800);
+      const timer = setTimeout(() => navigate('/active-job'), 900);
       return () => clearTimeout(timer);
     }
   }, [acceptState, navigate]);
 
   const handleAccept = () => {
     setAcceptState('loading');
-    setTimeout(() => {
-      setAcceptState('accepted');
-    }, 1200);
+    setTimeout(() => setAcceptState('accepted'), 1100);
   };
 
-  const NavLink = ({ to, icon: Icon, label, active, onClick }) => (
-    <button
-      onClick={onClick || (() => navigate(to))}
-      className={`flex flex-col items-center justify-center px-4 py-1 rounded-xl transition-all active:scale-95 ${
-        active
-          ? 'bg-[#B5DD3D] text-[#283500]'
-          : 'text-[#C5C9B0] hover:bg-[#343534]'
-      }`}
-    >
-      <Icon size={22} />
-      <span className="font-mono text-[10px] mt-1 tracking-wider">{label}</span>
-    </button>
-  );
-
-  const BottomNav = ({ activeTab }) => (
-    <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#121413] border-t border-[#444936] safe-area-bottom">
-      <NavLink to="/jobs" icon={ClipboardList} label="Jobs" active={activeTab === 'jobs'} />
-      <NavLink to="/dashboard" icon={Map} label="Map" active={activeTab === 'map'} />
-      <NavLink to="/earnings" icon={DollarSign} label="Earnings" active={activeTab === 'earnings'} />
-      <NavLink to="/profile" icon={User} label="Profile" active={activeTab === 'profile'} />
-    </nav>
-  );
-
+  /* ------------------------------ OFFLINE ------------------------------ */
   if (!isOnline) {
     return (
-      <div className="iphone-screen select-none" style={{ backgroundColor: '#121413' }}>
-        <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-[#121413] border-b border-[#444936] safe-area-top">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center bg-[#1b1c1b] px-3 py-1 rounded-full border border-[#444936]">
-              <div className="w-2 h-2 rounded-full bg-[#C5C9B0] mr-2" />
-              <span className="font-mono text-xs text-[#C5C9B0] tracking-wider">Offline</span>
-            </div>
-            <button
-              onClick={() => setIsOnline(true)}
-              className="text-[#D0FA58] hover:opacity-80 transition-opacity"
-              aria-label="Toggle online"
-            >
-              <Truck size={20} />
-            </button>
-          </div>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-[#292A29] text-[#E3E2E0] hover:bg-[#343534] transition-colors">
-            <Search size={20} />
-          </button>
+      <div className="iphone-screen select-none bg-ink">
+        <header className="px-5 pt-14 pb-4 flex items-center justify-between">
+          <h1 className="font-display text-xl font-bold text-text-primary">Dispatch</h1>
+          <span className="inline-flex items-center gap-2 text-xs font-medium text-text-secondary">
+            <span className="w-2 h-2 rounded-full bg-text-muted" />
+            Offline
+          </span>
         </header>
 
-        <main className="flex-1 relative mt-16 mb-20">
-          {/* Gradient Map Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1b1a] via-[#1F1F1E] to-[#141514]" />
-          <div className="absolute inset-0 opacity-[0.08]" style={{
-            backgroundImage: 'radial-gradient(circle at 20% 50%, #D4F05A 0%, transparent 50%), radial-gradient(circle at 80% 50%, #D4F05A 0%, transparent 50%)'
-          }} />
-
-          <div className="relative h-full w-full flex flex-col items-center justify-center px-4">
-            <div className="bg-[#1F1F1E] border border-[#444936] w-full max-w-[340px] p-8 rounded-2xl shadow-2xl flex flex-col items-center text-center space-y-6 animate-scaleIn">
-              <div className="w-20 h-20 rounded-full bg-[#292A29] flex items-center justify-center border border-[#444936]">
-                <WifiOff size={40} className="text-[#C5C9B0]" />
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-2xl font-semibold text-[#E3E2E0]">You're Offline</h1>
-                <p className="text-sm text-[#C5C9B0] leading-relaxed">
-                  Your status is currently set to off-duty. Go online to start receiving rescue requests in your area.
-                </p>
-              </div>
-              <div className="w-full">
-                <button
-                  onClick={handleGoOnline}
-                  disabled={goingOnline}
-                  className={`w-full font-bold py-3.5 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
-                    goingOnline
-                      ? 'bg-[#B5DD3D]/50 text-[#161F00]/50 cursor-not-allowed'
-                      : 'bg-[#B5DD3D] text-[#161F00] hover:brightness-105'
-                  }`}
-                >
-                  {goingOnline ? (
-                    <>
-                      <Loader2 size={20} className="animate-spin" />
-                      <span className="font-mono">Connecting...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Zap size={20} />
-                      <span className="font-mono">Go Online</span>
-                    </>
-                  )}
-                </button>
-              </div>
+        <main className="flex-1 relative flex flex-col items-center justify-center px-6 pb-24">
+          <div className="w-full max-w-[340px] bg-surface-raised border border-line rounded-3xl p-8 shadow-card card-inset flex flex-col items-center text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-surface-elevated flex items-center justify-center border border-line">
+              <WifiOff size={30} className="text-text-secondary" />
             </div>
-
-            {/* Typography System Showcase */}
-            <div className="w-full max-w-[340px] mt-6">
-              <div className="bg-[#1F1F1E] border border-[#444936] rounded-2xl p-6 shadow-2xl space-y-6">
-                <div className="border-b border-[#444936] pb-3">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#C5C9B0]/50">Typography / 5-Level Hierarchy</span>
-                </div>
-
-                {/* Level 1: Passenger name */}
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">L1 · 20pt Bold</span>
-                  <p className="text-[20px] font-bold text-[#E3E2E0] leading-tight">
-                    Lennert Nijenbijvank
-                  </p>
-                </div>
-
-                {/* Level 2: Section headers */}
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">L2 · 17pt Semibold</span>
-                  <p className="text-[17px] font-semibold text-[#E3E2E0] leading-snug">
-                    Active Requests
-                  </p>
-                </div>
-
-                {/* Level 3: Body data */}
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">L3 · 15pt Regular</span>
-                  <p className="text-[15px] font-normal text-[#E3E2E0] leading-relaxed">
-                    ★ 4.8 · 3.3km · 5 mins away
-                  </p>
-                </div>
-
-                {/* Level 4: Labels */}
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">L4 · 11pt Medium + All-caps +1 tracking</span>
-                  <p className="text-[11px] font-medium text-[#C5C9B0] uppercase tracking-[0.06em]">
-                    Target Location
-                  </p>
-                </div>
-
-                {/* Level 5: Metadata/captions */}
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-[#C5C9B0]/40">L5 · 13pt Light</span>
-                  <p className="text-[13px] font-light text-[#C5C9B0]/70 leading-snug">
-                    240 reviews · 2.5 km from you
-                  </p>
-                </div>
-              </div>
+            <div className="space-y-2">
+              <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary">You're offline</h2>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Go online to start receiving rescue requests in your area.
+              </p>
             </div>
+            <button
+              onClick={handleGoOnline}
+              disabled={goingOnline}
+              className={`w-full font-bold py-3.5 rounded-full press flex items-center justify-center gap-2 ${
+                goingOnline ? 'bg-brand-lime/50 text-text-muted cursor-not-allowed' : 'btn-lime'
+              }`}
+            >
+              {goingOnline ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  <span>Connecting…</span>
+                </>
+              ) : (
+                <>
+                  <Zap size={20} />
+                  <span>Go online</span>
+                </>
+              )}
+            </button>
+          </div>
 
-            <div className="absolute bottom-6 left-4 right-4 grid grid-cols-2 gap-3">
-              <div className="bg-[#1b1c1b]/80 backdrop-blur-sm border border-[#444936]/50 p-4 rounded-xl">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#C5C9B0]/70">Today's Earnings</span>
-                <span className="text-xl font-bold text-[#E3E2E0] mt-1 block">$0.00</span>
-              </div>
-              <div className="bg-[#1b1c1b]/80 backdrop-blur-sm border border-[#444936]/50 p-4 rounded-xl">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#C5C9B0]/70">Active Requests</span>
-                <span className="text-xl font-bold text-[#E3E2E0] mt-1 block">None</span>
-              </div>
+          <div className="w-full max-w-[340px] mt-6 grid grid-cols-2 gap-3">
+            <div className="bg-surface-raised border border-line p-4 rounded-2xl">
+              <span className="text-[11px] font-medium uppercase tracking-wide text-text-muted">Today's earnings</span>
+              <span className="num-led text-xl font-bold text-text-primary mt-1 block">$0.00</span>
+            </div>
+            <div className="bg-surface-raised border border-line p-4 rounded-2xl">
+              <span className="text-[11px] font-medium uppercase tracking-wide text-text-muted">Active requests</span>
+              <span className="num-led text-xl font-bold text-text-primary mt-1 block">None</span>
             </div>
           </div>
         </main>
 
-        <BottomNav activeTab="map" />
+        <div ref={navRef}>
+          <BottomNav active="map" />
+        </div>
       </div>
     );
   }
 
+  /* ------------------------------ ONLINE ------------------------------ */
   return (
-    <div
-      className="iphone-screen select-none"
-      style={{ backgroundColor: '#1F1F1E' }}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      {/* Top App Bar */}
-      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 bg-[#1F1F1E]/80 backdrop-blur-md border-b border-[#444936] safe-area-top">
+    <div className="iphone-screen select-none bg-ink">
+      {/* Header */}
+      <header ref={headerRef} className="relative z-40 px-5 pt-14 pb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full border-2 border-[#B5DD3D] overflow-hidden bg-[#343534] flex items-center justify-center shrink-0">
-            <User size={20} className="text-[#B5DD3D]" />
+          <div className="w-10 h-10 rounded-full bg-surface-elevated flex items-center justify-center border border-line">
+            <User size={19} className="text-text-secondary" />
           </div>
           <button
             onClick={() => setIsOnline(false)}
-            className="flex items-center bg-[#B5DD3D]/10 border border-[#B5DD3D]/30 px-3 py-1 rounded-full gap-2 hover:bg-red-500/20 hover:border-red-500/30 transition-all group"
+            className="inline-flex items-center bg-brand-lime/15 border border-brand-lime/40 px-4 py-1.5 rounded-full press"
           >
-            <div className="w-2 h-2 rounded-full bg-[#B5DD3D] glow-pulse group-hover:bg-red-500" />
-            <span className="text-xs font-mono text-[#B5DD3D]/80 group-hover:text-red-400 tracking-wider">Online</span>
-            <Truck size={14} className="text-[#B5DD3D] group-hover:text-red-400" />
+            <span className="text-xs font-semibold text-brand-lime-dark">Online</span>
           </button>
         </div>
-        <button className="w-10 h-10 flex items-center justify-center rounded-full bg-[#292A29] text-[#E3E2E0] hover:bg-[#343534] transition-colors">
-          <Search size={20} />
+        <button
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-raised border border-line text-text-primary press"
+          aria-label="Search"
+        >
+          <Search size={19} />
         </button>
       </header>
 
@@ -312,155 +226,120 @@ export default function DashboardPage() {
           <div className="absolute inset-0 map-gradient-overlay pointer-events-none z-10" />
         </div>
 
-        {/* Route Info Bubble */}
+        {/* Route bubble — clean, integrated */}
         <div
+          ref={bubbleRef}
           key={customerIndex}
-          className="absolute top-[40%] left-1/2 -translate-x-1/2 flex items-center bg-[#292A29]/95 backdrop-blur-md border border-[#444936] px-5 py-3 rounded-2xl shadow-2xl z-20 transition-all duration-300"
+          className="absolute top-[13%] left-1/2 -translate-x-1/2 z-20 glass-surface-strong rounded-2xl shadow-card px-4 py-2.5 flex items-center gap-3 whitespace-nowrap"
         >
-          <div className="flex flex-col border-r border-[#444936] pr-4 mr-4">
-            <span className="text-[#B5DD3D] font-bold text-lg">{customer.distance}</span>
-            <span className="text-[#C5C9B0] text-xs font-mono tracking-wider">{customer.time}</span>
+          <div className="flex items-center gap-1.5">
+            <MapPin size={15} className="text-brand-lime-dark shrink-0" />
+            <span className="num-led text-text-primary font-bold text-base">{customer.distance}</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-[#E3E2E0] font-semibold text-sm">{customer.location}</span>
-            <span className="text-[#C5C9B0] text-[10px] uppercase tracking-widest">Target Location</span>
+          <div className="w-px h-5 bg-line-strong" />
+          <div className="flex items-center gap-1.5">
+            <Clock size={15} className="text-text-muted shrink-0" />
+            <span className="text-text-secondary text-sm font-medium">{customer.time} away</span>
           </div>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#292A29] border-r border-b border-[#444936] rotate-45" />
         </div>
 
-        {/* Driver Marker */}
-        <div className="absolute top-[55%] left-[40%] z-20">
+        {/* Driver marker — single clean dot */}
+        <div ref={markerRef} className="absolute top-[48%] left-[42%] z-20">
           <div className="relative flex items-center justify-center">
-            <div className="absolute w-12 h-12 bg-[#B5DD3D]/20 rounded-full animate-ping" />
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-[#B5DD3D]">
-              <Navigation size={20} className="text-[#B5DD3D] rotate-45" />
+            <div className="absolute w-10 h-10 rounded-full bg-brand-lime/30" />
+            <div className="relative w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg border-[3px] border-brand-lime">
+              <Navigation size={19} className="text-brand-lime-dark rotate-45" />
             </div>
           </div>
         </div>
 
-        {/* Swipeable Card */}
+        {/* Request card — clean, professional */}
         <div
           ref={cardRef}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          className="absolute bottom-24 left-0 w-full px-5 z-40 transition-transform will-change-transform"
-          style={{
-            transform: `translateX(${swipeX}px)`,
-            opacity: swipeOpacity,
-          }}
+          className="absolute bottom-24 left-0 w-full px-4 z-40 will-change-transform cursor-grab active:cursor-grabbing"
         >
-          <div className="card-stack-effect bg-[#292A29] border border-[#444936] rounded-3xl p-6 shadow-2xl">
-            {/* Customer Profile */}
-            <div className="flex items-start justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#444936] bg-gradient-to-br from-[#343534] to-[#292A29] flex items-center justify-center shrink-0">
-                  <User size={28} className="text-[#C5C9B0]" />
+          <div className="bg-surface-raised border border-line rounded-3xl p-5 shadow-card card-inset">
+            {/* Customer row */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-14 h-14 rounded-2xl bg-surface-elevated border border-line flex items-center justify-center shrink-0">
+                  <User size={26} className="text-text-secondary" />
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <h2 className="text-lg font-bold text-[#E3E2E0] truncate max-w-[180px]">{customer.name}</h2>
-                  <div className="flex items-center gap-1">
-                    <Star size={14} className="text-[#B5DD3D] fill-[#B5DD3D]" />
-                    <span className="text-[#C5C9B0] font-bold text-sm">{customer.rating}</span>
-                    <span className="text-[#C5C9B0]/60 text-xs ml-1">({customer.reviews})</span>
+                  <h2 className="font-display text-lg font-bold text-text-primary truncate tracking-tight">
+                    {customer.name}
+                  </h2>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <Star size={14} className="text-brand-lime-dark fill-brand-lime-dark" />
+                    <span className="text-text-primary font-semibold text-sm">{customer.rating}</span>
+                    <span className="text-text-muted text-xs">({customer.reviews})</span>
                   </div>
                 </div>
               </div>
-              <button className="w-10 h-10 rounded-full bg-[#343534] flex items-center justify-center border border-[#444936] shrink-0 hover:bg-[#474745] transition-colors">
-                <Info size={18} className="text-[#E3E2E0]" />
-              </button>
+              <div className="text-right shrink-0">
+                <div className="num-led text-xl font-bold text-text-primary">{customer.fare}</div>
+                <div className="text-text-muted text-[11px] font-medium">est. fare</div>
+              </div>
+            </div>
+
+            {/* Location row */}
+            <div className="flex items-center gap-2.5 bg-surface-elevated rounded-2xl px-4 py-3 mb-5">
+              <MapPin size={16} className="text-brand-lime-dark shrink-0" />
+              <div className="min-w-0">
+                <div className="text-text-primary text-sm font-semibold truncate">{customer.location}</div>
+                <div className="text-text-muted text-[11px]">Pickup location</div>
+              </div>
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-3">
               {acceptState === 'idle' && (
                 <button
-                  onClick={() => {
-                    setSwipeX(-400);
-                    setSwipeOpacity(0);
-                    setTimeout(nextCustomer, 200);
-                  }}
-                  className="w-16 h-16 rounded-full bg-[#343534] border border-[#444936] flex items-center justify-center hover:bg-red-500/20 hover:border-red-500/50 transition-all shrink-0 active:scale-90"
-                  aria-label="Decline ride"
+                  onClick={dismissCard}
+                  className="w-14 h-14 rounded-full bg-surface-elevated border border-line flex items-center justify-center press shrink-0"
+                  aria-label="Decline"
                 >
-                  <X size={24} className="text-red-400" />
+                  <X size={22} className="text-danger" />
                 </button>
               )}
               <button
                 onClick={handleAccept}
                 disabled={acceptState !== 'idle'}
-                className={`flex-1 h-16 rounded-2xl flex items-center justify-center gap-3 transition-all duration-150 relative overflow-hidden ${
+                className={`flex-1 h-14 rounded-full flex items-center justify-center gap-2.5 font-display font-bold text-lg press ${
                   acceptState === 'idle'
-                    ? 'bg-[#B5DD3D] text-[#283500] active:scale-[0.98] hover:brightness-105'
+                    ? 'btn-lime'
                     : acceptState === 'loading'
-                      ? 'bg-[#B5DD3D] text-[#283500] cursor-not-allowed'
-                      : 'bg-green-600 text-white cursor-default'
+                      ? 'btn-lime cursor-not-allowed opacity-90'
+                      : 'bg-ok text-white cursor-default'
                 }`}
               >
                 {acceptState === 'idle' && (
                   <>
-                    <CheckCircle size={24} />
-                    <span className="font-bold text-lg">Accept Ride</span>
+                    <Check size={22} strokeWidth={3} />
+                    <span>Accept</span>
                   </>
                 )}
                 {acceptState === 'loading' && (
                   <>
-                    <Loader2 size={24} className="animate-spin" />
-                    <span className="font-bold text-lg">Processing...</span>
+                    <Loader2 size={22} className="animate-spin" />
+                    <span>Processing…</span>
                   </>
                 )}
                 {acceptState === 'accepted' && (
                   <>
-                    <CheckCircle size={24} />
-                    <span className="font-bold text-lg">Job Accepted!</span>
+                    <Check size={22} strokeWidth={3} />
+                    <span>Accepted</span>
                   </>
                 )}
               </button>
             </div>
-
-            {/* Swipe Hint */}
-            <div className="w-full flex flex-col items-center gap-2">
-              <div className="w-full h-1 bg-[#343534] rounded-full overflow-hidden relative">
-                <div className="absolute inset-y-0 left-0 w-1/4 bg-[#C5C9B0]/30 animate-dash-slide" />
-              </div>
-              <span className="text-[#C5C9B0] font-mono uppercase tracking-[0.2em] text-[10px]">
-                Swipe left or tap ✕ to reject
-              </span>
-            </div>
           </div>
         </div>
-
-        {/* Next customer peek */}
-        {swipeX < -40 && (
-          <div
-            className="absolute bottom-24 right-3 z-30 transition-all duration-150"
-            style={{ opacity: Math.min(1, Math.abs(swipeX) / 200) }}
-          >
-            <div className="bg-[#343534] border border-[#444936] rounded-3xl p-5 shadow-xl w-[200px]">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1F1F1E] flex items-center justify-center">
-                  <User size={18} className="text-[#C5C9B0]" />
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="text-[#E3E2E0] text-sm font-bold truncate max-w-[120px]">
-                    {CUSTOMERS[(customerIndex + 1) % CUSTOMERS.length].name}
-                  </span>
-                  <span className="text-[#C5C9B0] text-[10px]">Next request</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#1F1F1E] border-t border-[#444936] safe-area-bottom">
-        <NavLink to="/jobs" icon={ClipboardList} label="Jobs" />
-        <NavLink to="/dashboard" icon={Map} label="Map" active />
-        <NavLink to="/earnings" icon={DollarSign} label="Earnings" />
-        <NavLink to="/profile" icon={User} label="Profile" />
-      </nav>
+      <div ref={navRef}>
+        <BottomNav active="map" />
+      </div>
     </div>
   );
 }
