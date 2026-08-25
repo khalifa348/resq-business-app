@@ -41,13 +41,13 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="iphone-screen page-wipe animate-fadeIn bg-ink relative">
+    <div className="iphone-screen page-wipe bg-ink relative">
       <BackgroundQ />
       <div className="grain-overlay" />
 
       <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
         {/* Header */}
-        <header className="mb-8 animate-slideUp delay-0">
+        <header className="mb-8">
           <span className="text-brand-lime text-[10px] font-mono uppercase tracking-[0.3em]">AUTH · CREATE ACCOUNT</span>
           <h1 className="font-display text-5xl font-bold tracking-tight text-brand-lime leading-tight mt-1">
             <span className="custom-underline">Sign up</span>
@@ -55,7 +55,7 @@ export default function SignUpPage() {
         </header>
 
         {/* Sign Up Form */}
-        <div className="glass-surface rounded-3xl clip-notch p-6 card-inset animate-slideUp delay-100">
+        <div className="glass-surface rounded-3xl clip-notch p-6 card-inset">
           <form className="space-y-8" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div className="space-y-2">
@@ -141,7 +141,7 @@ export default function SignUpPage() {
 
             {/* Error message */}
             {error && (
-              <p className="text-danger text-xs text-center animate-slideUp delay-100">{error}</p>
+              <p className="text-danger text-xs text-center">{error}</p>
             )}
 
             {/* Create Account Button */}
@@ -162,7 +162,7 @@ export default function SignUpPage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-10 text-center relative z-10 animate-slideUp delay-500">
+      <footer className="py-10 text-center relative z-10 delay-500">
         <p className="text-sm text-text-secondary">
           Already have an Account?{' '}
           <Link className="text-brand-lime font-bold transition-all hover:underline" to="/signin">

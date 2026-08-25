@@ -28,7 +28,6 @@ export default function JobsPage() {
     <div className="iphone-screen page-wipe overflow-y-auto bg-ink">
       <PageHeader
         title="Jobs History"
-        code="OPS-01"
       />
 
       <main className="pt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">

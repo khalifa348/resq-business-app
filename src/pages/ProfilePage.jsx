@@ -147,7 +147,7 @@ export default function ProfilePage() {
 
       {/* Saved Notification */}
       {saved && (
-        <div className="fixed top-20 left-4 right-4 z-50 animate-slideUp">
+        <div className="fixed top-20 left-4 right-4 z-50">
           <div className="glass-surface-strong border border-brand-lime/30 rounded-2xl px-4 py-3 flex items-center gap-3">
             <CheckCircle size={18} className="text-brand-lime" />
             <span className="font-mono text-sm text-brand-lime">Profile saved successfully!</span>
@@ -174,9 +174,9 @@ export default function ProfilePage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex flex-col items-center text-text-secondary group-hover:text-brand-lime transition-colors">
+                <div className="flex flex-col items-center text-text-secondary">
                   <Building2 size={32} />
-                  <span className="font-mono text-[10px] mt-1">LOGO</span>
+                  <span className="text-[11px] font-medium mt-1">Add logo</span>
                 </div>
               )}
             </div>
@@ -340,7 +340,7 @@ export default function ProfilePage() {
         >
           <span className="flex items-center gap-3">
             <LogOut size={20} />
-            <span className="font-mono text-[14px] tracking-[0.05em]">SIGN OUT</span>
+            <span className="text-[15px] font-semibold">Sign out</span>
           </span>
           <ChevronRight size={18} className="text-danger/60" />
         </button>

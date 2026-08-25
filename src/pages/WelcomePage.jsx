@@ -8,16 +8,11 @@ const useDayNight = () =>
   useMemo(() => ({ isNight: isNightNow() }), []);
 
 export default function WelcomePage() {
-  const [exiting, setExiting] = useState(false);
   const { isNight } = useDayNight();
-
-  const handleExit = useCallback(() => {
-    setExiting(true);
-  }, []);
 
   return (
     <div
-      className={`iphone-screen page-wipe ${exiting ? 'animate-fadeOut' : ''}`}
+      className="iphone-screen page-wipe"
       style={{ backgroundColor: '#F5F5F2' }}
     >
       {/* Cinematic night-drive backdrop */}
@@ -39,7 +34,7 @@ export default function WelcomePage() {
 
       <main className="relative z-10 flex-1 px-6 flex flex-col justify-between min-h-0 pt-24 pb-10">
         <WelcomeHeader lightText={isNight} />
-        <ActionContainer onExit={handleExit} />
+        <ActionContainer />
       </main>
     </div>
   );

@@ -63,7 +63,7 @@ export default function SignInPage() {
 
       <main className="relative z-10 flex-1 flex flex-col px-6 pb-8 overflow-y-auto no-scrollbar">
         {/* Heading */}
-        <div className="mt-4 mb-8 animate-slideUp delay-0">
+        <div className="mt-4 mb-8">
           <span className="text-brand-lime-dark text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
             AUTH · SIGN IN
           </span>
@@ -76,7 +76,7 @@ export default function SignInPage() {
         </div>
 
         {/* Card — clean, high-contrast, professional */}
-        <div className="bg-surface-raised border border-line rounded-3xl p-6 shadow-card card-inset animate-slideUp delay-100">
+        <div className="bg-surface-raised border border-line rounded-3xl p-6 shadow-card card-inset">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email */}
             <div className="space-y-2">
@@ -146,7 +146,7 @@ export default function SignInPage() {
 
             {/* Error */}
             {error && (
-              <p className="text-danger text-xs text-center animate-slideUp">{error}</p>
+              <p className="text-danger text-xs text-center">{error}</p>
             )}
 
             {/* Submit */}
@@ -166,7 +166,7 @@ export default function SignInPage() {
         </div>
 
         {/* Sign up link */}
-        <div className="pt-8 text-center animate-slideUp delay-200">
+        <div className="pt-8 text-center">
           <p className="text-sm text-text-secondary">
             Don't have an account?{' '}
             <Link className="text-brand-lime-dark font-bold hover:underline" to="/signup">

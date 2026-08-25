@@ -81,14 +81,14 @@ export default function CompanyKeyPage() {
   };
 
   return (
-    <div className="iphone-screen page-wipe animate-fadeIn bg-ink relative">
+    <div className="iphone-screen page-wipe bg-ink relative">
       <BackgroundQ />
       <div className="grain-overlay" />
 
       <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
         {/* Header */}
-        <div className="mb-8 animate-slideUp delay-0 text-center">
-          <span className="text-brand-lime text-[10px] font-mono uppercase tracking-[0.3em]">AUTH · COMPANY KEY</span>
+        <div className="mb-8 text-center">
+          <span className="text-brand-lime-dark text-[11px] font-semibold uppercase tracking-wide">Company key</span>
           <div className="flex justify-center mb-6 mt-2">
             <div className="w-20 h-20 clip-notch bg-brand-lime/10 border border-line flex items-center justify-center">
               <ShieldCheck size={44} className="text-brand-lime" />
@@ -103,7 +103,7 @@ export default function CompanyKeyPage() {
         </div>
 
         {/* Digit Inputs */}
-        <div className="glass-surface rounded-3xl p-6 card-inset animate-slideUp delay-100">
+        <div className="glass-surface rounded-3xl p-6 card-inset delay-100">
           <div className="flex justify-center gap-3 mb-8">
             {digits.map((digit, index) => (
               <input

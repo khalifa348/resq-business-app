@@ -355,13 +355,13 @@ body {
 }
 
 /* ============ Button Press ============ */
+/* NO click transitions — instant response, professional (anti-AI) */
 .press-effect {
-  transition: transform 0.1s ease, opacity 0.1s ease;
+  transition: none;
 }
-
 .press-effect:active {
-  transform: scale(0.97);
-  opacity: 0.9;
+  filter: none;
+  transform: none;
 }
 
 /* ============ Skeleton Loading ============ */
@@ -590,31 +590,36 @@ body, .font-display {
   flex-shrink: 0;
 }
 
-/* Primary CTA — flat solid rose, professional press (no glow, no scale, no offset) */
+/* Primary CTA — flat solid rose, instant response (no glow, no scale, no offset) */
 .btn-lime {
   background: #A8C256;
   color: #1A2200;
-  transition: filter 0.12s ease;
 }
-.btn-lime:hover { filter: brightness(1.06); }
-.btn-lime:active { filter: brightness(0.85); }
+.btn-lime:hover { filter: none; }
+.btn-lime:active { filter: none; }
 
-/* Generic press state — subtle brightness dip, no bouncy scale */
-.press { transition: filter 0.12s ease; }
-.press:active { filter: brightness(0.86); }
+/* Generic press state — no-op: clicks respond instantly (anti-AI) */
+.press { transition: none; }
+.press:active { filter: none; }
 
-/* Ghost secondary button — airy Airbnb-style outline */
+/* Global: buttons/a respond instantly — no hover/click transitions anywhere */
+button, a, [role="button"] {
+  transition: none !important;
+}
+button:hover, a:hover { filter: none !important; }
+button:active, a:active { filter: none !important; transform: none !important; }
+
+/* Ghost secondary button — airy Airbnb-style outline, no active morph */
 .btn-ghost {
-  border: 1.5px solid #DDDDDD;
-  color: #222222;
-  background: #FFFFFF;
+  border: 1.5px solid #D7D7D0;
+  color: #201F1C;
+  background: #FAFAF7;
   font-size: 15px;
   font-weight: 600;
-  transition: background 0.2s ease, border-color 0.2s ease;
 }
 .btn-ghost:active {
-  background: rgba(168, 194, 86, 0.15);
-  border-color: rgba(168, 194, 86, 0.35);
+  background: #FAFAF7;
+  border-color: #D7D7D0;
 }
 
 /* Stencil watermark wordmark */

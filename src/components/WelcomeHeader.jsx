@@ -12,14 +12,14 @@ export default function WelcomeHeader({ lightText = false }) {
     <section className="mb-0 text-center" data-purpose="welcome-section">
       {/* iPhone-style app icon — lime tile with ink mark, light halo behind */}
       {/* Brand label (icon box removed per design decision) */}
-      <div className="flex flex-col items-center animate-slideUp delay-0">
+      <div className="flex flex-col items-center">
         <p className={titleCls}>
           RESQ Business
         </p>
       </div>
 
       {/* Headline */}
-      <div className="animate-slideUp delay-100 mt-8">
+      <div className="mt-8">
         <h1 className={headCls}>
           Start your shift
         </h1>

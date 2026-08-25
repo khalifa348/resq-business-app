@@ -83,7 +83,7 @@ export default function CallPage() {
           </div>
 
           <div className="mt-8 text-center">
-            <span className="text-brand-lime text-[10px] font-mono uppercase tracking-[0.3em]">LIVE OPS · ACTIVE CALL</span>
+            <span className="text-brand-lime-dark text-[11px] font-semibold uppercase tracking-wide">Active call</span>
             <h1 className="font-display text-2xl font-bold text-text-primary mt-1">Lennert Nijenbijvank</h1>
             <p className="font-mono text-sm text-text-secondary flex items-center justify-center gap-2 mt-2">
               <span>Mobile</span>
