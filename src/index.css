@@ -510,7 +510,7 @@ body {
 
 /* Rose gradient text for hero numbers */
 .text-gradient-lime {
-  background: linear-gradient(135deg, #C6D96E 0%, #A8C256 45%, #6B8524 100%);
+  background: linear-gradient(135deg, #B9CC6E 0%, #A8C256 45%, #667F24 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

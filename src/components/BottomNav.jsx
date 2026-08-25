@@ -21,14 +21,16 @@ export default function BottomNav({ active }) {
               key={to}
               onClick={() => navigate(to)}
               aria-label={label}
-              className={`flex flex-col items-center justify-center gap-1 rounded-full px-5 py-1.5 transition-colors press ${
-                isActive ? 'text-brand-lime-dark' : 'text-text-muted hover:text-text-secondary'
+              className={`flex flex-col items-center justify-center gap-1 rounded-full px-5 py-1.5 ${
+                isActive
+                  ? 'bg-brand-lime/15 text-text-primary'
+                  : 'text-text-muted hover:text-text-secondary'
               }`}
             >
-              <Icon size={21} strokeWidth={isActive ? 2.5 : 2} />
+              <Icon size={21} strokeWidth={2} />
               <span
                 className={`text-[10px] leading-none font-medium ${
-                  isActive ? 'text-brand-lime-dark font-semibold' : 'text-text-muted'
+                  isActive ? 'text-text-primary' : 'text-text-muted'
                 }`}
               >
                 {label}

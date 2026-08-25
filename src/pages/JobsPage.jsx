@@ -55,8 +55,8 @@ export default function JobsPage() {
         <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 clip-notch-sm bg-surface-elevated border border-line flex items-center justify-center">
-                <Star size={24} className="text-brand-lime fill-brand-lime" />
+              <div className="w-12 h-12 rounded-2xl bg-surface-elevated border border-line flex items-center justify-center">
+                <Star size={24} className="text-brand-lime fill-brand-lime/50" />
               </div>
               <div>
                 <p className="num-led text-xl text-text-primary">{avgRating}</p>
@@ -69,7 +69,7 @@ export default function JobsPage() {
                   <Star
                     key={star}
                     size={14}
-                    className={star <= Math.round(Number(avgRating)) ? 'text-brand-lime fill-brand-lime' : 'text-line-strong'}
+                    className={star <= Math.round(Number(avgRating)) ? 'text-brand-lime fill-brand-lime/50' : 'text-line-strong'}
                   />
                 ))}
               </div>
@@ -80,7 +80,7 @@ export default function JobsPage() {
         {/* All Jobs List */}
         <section className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="font-mono text-xs text-text-secondary uppercase tracking-wider">All Completed Jobs</h3>
+            <h3 className="text-sm font-semibold text-text-primary">All Completed Jobs</h3>
             <span className="font-mono text-[10px] text-text-muted">{ALL_JOBS.length} total</span>
           </div>
 
@@ -92,14 +92,14 @@ export default function JobsPage() {
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime/70 group-hover:text-brand-lime transition-colors shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime/50 group-hover:text-brand-lime/70 shrink-0">
                       <CheckCircle size={20} />
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-text-primary truncate">{job.name}</p>
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <div className="flex items-center gap-1">
-                          <Star size={10} className="text-brand-lime fill-brand-lime" />
+                          <Star size={10} className="text-brand-lime fill-brand-lime/50" />
                           <span className="text-[10px] font-mono text-text-secondary">{job.rating}</span>
                         </div>
                         <span className="w-1 h-1 rounded-full bg-line-strong" />
@@ -107,7 +107,7 @@ export default function JobsPage() {
                       </div>
                     </div>
                   </div>
-                  <p className="font-mono text-sm font-bold text-brand-lime shrink-0 ml-2">${job.amount.toFixed(2)}</p>
+                  <p className="font-mono text-sm font-bold text-text-primary shrink-0 ml-2">${job.amount.toFixed(2)}</p>
                 </div>
 
                 <div className="flex items-center gap-4 mt-2 pl-[52px]">
@@ -119,7 +119,7 @@ export default function JobsPage() {
                     <MapPin size={10} className="text-text-muted" />
                     <span className="text-[10px] font-mono text-text-muted">{job.distance}</span>
                   </div>
-                  <span className="ml-auto px-2 py-0.5 rounded-full bg-brand-lime/10 text-brand-lime text-[10px] uppercase font-mono tracking-wider">
+                  <span className="ml-auto px-2 py-0.5 rounded-full bg-ok/10 text-ok text-[10px] font-medium uppercase tracking-wide">
                     {job.status}
                   </span>
                 </div>
