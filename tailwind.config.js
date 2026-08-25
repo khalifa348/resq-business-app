@@ -5,24 +5,24 @@ export default {
     extend: {
       colors: {
         /* ===== RESQ V2 — "Airbnb Light" brand ===== */
-        'brand-lime': '#C6F24E',
-        'brand-lime-bright': '#D6FA6B',
-        'brand-lime-dim': '#9CC93C',
-        'brand-lime-dark': '#7FA82E',
+        'brand-lime': '#A8C256',
+        'brand-lime-bright': '#C6D96E',
+        'brand-lime-dim': '#8FAE3E',
+        'brand-lime-dark': '#6B8524',
 
         /* ===== Semantic surface scale (clean warm white) ===== */
-        ink: '#FFFFFF',              // page background (lightest)
-        surface: '#F7F7F7',          // base surface
-        'surface-raised': '#FFFFFF', // cards
-        'surface-elevated': '#F0F0F0', // hover / chips
-        'surface-bright': '#EBEBEB', // icon wells
+        ink: '#F5F5F2',              // page background (lightest)
+        surface: '#EDEDE9',          // base surface
+        'surface-raised': '#FAFAF7', // cards
+        'surface-elevated': '#E6E6E1', // hover / chips
+        'surface-bright': '#DFDFD9', // icon wells
 
         /* ===== Borders ===== */
-        line: '#E8E8E8',
-        'line-strong': '#DDDDDD',
+        line: '#E3E3DD',
+        'line-strong': '#D7D7D0',
 
         /* ===== Text ===== */
-        'text-primary': '#222222',
+        'text-primary': '#201F1C',
         'text-secondary': '#717171',
         'text-muted': '#9E9E9E',
 
@@ -33,29 +33,29 @@ export default {
 
         /* ===== Material-3 names kept mapped to light palette (compat) ===== */
         'tertiary-container': '#F7F7F7',
-        'primary-fixed': '#C6F24E',
-        'primary-container': '#E4F8B8',
+        'primary-fixed': '#A8C256',
+        'primary-container': '#E8F0CC',
         'inverse-on-surface': '#FFFFFF',
         'surface-variant': '#F0F0F0',
         'error': '#FF5A5F',
         'error-container': '#FFDAD6',
-        'surface-container': '#FFFFFF',
+        'surface-container': '#FAFAF7',
         'on-secondary-fixed': '#222222',
         'on-error': '#FFFFFF',
-        'surface-container-lowest': '#FFFFFF',
+        'surface-container-lowest': '#F5F5F2',
         'surface': '#F7F7F7',
         'on-error-container': '#B8003C',
-        'inverse-primary': '#7FA82E',
+        'inverse-primary': '#6B8524',
         'surface-container-low': '#F7F7F7',
         'surface-bright-m3': '#EBEBEB',
         'on-primary-fixed': '#1A2200',
-        'background': '#FFFFFF',
+        'background': '#F5F5F2',
         'surface-dim': '#F2F2F2',
         'surface-container-high': '#F0F0F0',
         'on-surface-variant': '#717171',
         'surface-container-highest': '#EBEBEB',
         'secondary-fixed-dim': '#DDDDDD',
-        'on-background': '#222222',
+        'on-background': '#201F1C',
         'on-primary-container': '#3B4D00',
         'secondary-container': '#F0F0F0',
         'tertiary-fixed-dim': '#EBEBEB',
@@ -64,19 +64,19 @@ export default {
         'secondary-fixed': '#F0F0F0',
         'outline-variant': '#E8E8E8',
         'on-tertiary': '#333333',
-        'primary-fixed-dim': '#9CC93C',
+        'primary-fixed-dim': '#8FAE3E',
         'on-secondary-container': '#717171',
         'on-tertiary-fixed-variant': '#555555',
         'on-tertiary-container': '#666666',
         'secondary': '#DDDDDD',
-        'primary': '#C6F24E',
-        'on-primary-fixed-variant': '#7FA82E',
+        'primary': '#A8C256',
+        'on-primary-fixed-variant': '#6B8524',
         'tertiary': '#F0F0F0',
-        'surface-tint': '#C6F24E',
+        'surface-tint': '#A8C256',
         'on-primary': '#1A2200',
         'on-secondary-fixed-variant': '#555555',
         'inverse-surface': '#333333',
-        'on-surface': '#222222',
+        'on-surface': '#201F1C',
         'on-secondary': '#222222',
         'tertiary-fixed': '#F5F5F5',
       },
@@ -96,13 +96,13 @@ export default {
       boxShadow: {
         card: '0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.08)',
         'card-hover': '0 2px 4px rgba(0,0,0,0.06), 0 14px 36px rgba(0,0,0,0.12)',
-        glow: '0 0 28px rgba(198,242,78,0.35)',
-        'glow-sm': '0 0 12px rgba(198,242,78,0.25)',
+        glow: '0 0 28px rgba(168,194,86,0.25)',
+        'glow-sm': '0 0 12px rgba(168,194,86,0.18)',
         dock: '0 -8px 32px rgba(0,0,0,0.08)',
         inset: 'inset 0 1px 0 rgba(255,255,255,0.9)',
         /* Hard offset shadows (kept for compat; unused per anti-AI rules) */
         hard: '4px 4px 0 0 #222222',
-        'hard-lime': '4px 4px 0 0 #C6F24E',
+        'hard-lime': '4px 4px 0 0 #A8C256',
         'hard-sm': '2px 2px 0 0 #222222',
       },
       keyframes: {

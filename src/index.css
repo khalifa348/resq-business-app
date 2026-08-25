@@ -16,7 +16,7 @@ body {
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FFFFFF;
+  background-color: #F5F5F2;
 }
 
 /* ============ iPhone Device Frame (desktop stage) ============ */
@@ -31,8 +31,8 @@ body {
   justify-content: center;
   padding: 32px 16px;
   background:
-    radial-gradient(1200px 600px at 20% -10%, rgba(198, 242, 78, 0.10), transparent 60%),
-    radial-gradient(1000px 500px at 85% 110%, rgba(198, 242, 78, 0.08), transparent 55%),
+    radial-gradient(1200px 600px at 20% -10%, rgba(168, 194, 86, 0.10), transparent 60%),
+    radial-gradient(1000px 500px at 85% 110%, rgba(168, 194, 86, 0.08), transparent 55%),
     #14161a;
 }
 
@@ -75,7 +75,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   border-radius: 50px;
-  background-color: #FFFFFF;
+  background-color: #F5F5F2;
 }
 
 /* Dynamic Island */
@@ -165,7 +165,7 @@ body {
 }
 
 .input-glow:focus-within {
-  border-color: #C6F24E !important;
+  border-color: #A8C256 !important;
 }
 
 .input-glow:focus-within input {
@@ -192,8 +192,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(198, 242, 78, 0.30)); }
-  50% { opacity: 0.8; transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(198, 242, 78, 0.55)); }
+  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(168, 194, 86, 0.30)); }
+  50% { opacity: 0.8; transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(168, 194, 86, 0.55)); }
 }
 
 .map-gradient-overlay {
@@ -211,11 +211,11 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 25.5%;
-  background: linear-gradient(180deg, #D6FA6B 0%, #C6F24E 100%);
+  background: linear-gradient(180deg, #C6D96E 0%, #A8C256 100%);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
     0 16px 36px rgba(0, 0, 0, 0.18),
-    0 6px 18px rgba(198, 242, 78, 0.30),
+    0 6px 18px rgba(168, 194, 86, 0.30),
     inset 0 1px 0 rgba(255, 255, 255, 0.55);
   position: relative;
   display: flex;
@@ -400,9 +400,9 @@ body {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #C6F24E;
+  background: #A8C256;
   border: 3px solid #FFFFFF;
-  box-shadow: 0 0 10px rgba(198, 242, 78, 0.5);
+  box-shadow: 0 0 10px rgba(168, 194, 86, 0.5);
   position: relative;
   z-index: 2;
 }
@@ -415,7 +415,7 @@ body {
   height: 32px;
   margin: -16px 0 0 -16px;
   border-radius: 50%;
-  border: 2px solid rgba(198, 242, 78, 0.35);
+  border: 2px solid rgba(168, 194, 86, 0.35);
   animation: map-pulse 2s ease-out infinite;
   z-index: 1;
 }
@@ -453,16 +453,16 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50% 50% 50% 0;
-  background: #C6F24E;
+  background: #A8C256;
   transform: rotate(-45deg);
   border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 8px rgba(198, 242, 78, 0.35);
+  box-shadow: 0 2px 8px rgba(168, 194, 86, 0.35);
 }
 
 .pickup-pin-tail {
   width: 2px;
   height: 14px;
-  background: rgba(198, 242, 78, 0.5);
+  background: rgba(168, 194, 86, 0.5);
   margin-top: -1px;
 }
 
@@ -474,7 +474,7 @@ body {
   height: 36px;
   margin-left: -18px;
   border-radius: 50%;
-  border: 2px solid rgba(198, 242, 78, 0.30);
+  border: 2px solid rgba(168, 194, 86, 0.30);
   animation: pickup-pulse 2s ease-out infinite;
   z-index: 1;
 }
@@ -510,7 +510,7 @@ body {
 
 /* Rose gradient text for hero numbers */
 .text-gradient-lime {
-  background: linear-gradient(135deg, #D6FA6B 0%, #C6F24E 45%, #7FA82E 100%);
+  background: linear-gradient(135deg, #C6D96E 0%, #A8C256 45%, #6B8524 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -534,7 +534,7 @@ body {
   left: 12%;
   right: 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(198, 242, 78, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(168, 194, 86, 0.35), transparent);
   pointer-events: none;
 }
 
@@ -592,7 +592,7 @@ body, .font-display {
 
 /* Primary CTA — flat solid rose, professional press (no glow, no scale, no offset) */
 .btn-lime {
-  background: #C6F24E;
+  background: #A8C256;
   color: #1A2200;
   transition: filter 0.12s ease;
 }
@@ -613,8 +613,8 @@ body, .font-display {
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 .btn-ghost:active {
-  background: rgba(198, 242, 78, 0.15);
-  border-color: rgba(198, 242, 78, 0.35);
+  background: rgba(168, 194, 86, 0.15);
+  border-color: rgba(168, 194, 86, 0.35);
 }
 
 /* Stencil watermark wordmark */
@@ -622,7 +622,7 @@ body, .font-display {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 800;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(198, 242, 78, 0.10);
+  -webkit-text-stroke: 1px rgba(168, 194, 86, 0.10);
   user-select: none;
   pointer-events: none;
   letter-spacing: -0.04em;
@@ -634,7 +634,7 @@ body, .font-display {
   position: absolute;
   inset: -30%;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(198, 242, 78, 0.16), rgba(198, 242, 78, 0.04) 22%, transparent 32%, transparent 100%);
+  background: conic-gradient(from 0deg, rgba(168, 194, 86, 0.16), rgba(168, 194, 86, 0.04) 22%, transparent 32%, transparent 100%);
   animation: resq-radar 3.2s linear infinite;
   pointer-events: none;
 }
@@ -643,7 +643,7 @@ body, .font-display {
 }
 .radar-ring {
   position: absolute;
-  border: 1px solid rgba(198, 242, 78, 0.14);
+  border: 1px solid rgba(168, 194, 86, 0.14);
   border-radius: 50%;
   pointer-events: none;
 }

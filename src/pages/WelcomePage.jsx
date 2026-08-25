@@ -18,7 +18,7 @@ export default function WelcomePage() {
   return (
     <div
       className={`iphone-screen page-wipe ${exiting ? 'animate-fadeOut' : ''}`}
-      style={{ backgroundColor: '#FFFFFF' }}
+      style={{ backgroundColor: '#F5F5F2' }}
     >
       {/* Cinematic night-drive backdrop */}
       <video
