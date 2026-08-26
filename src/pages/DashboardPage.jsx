@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 import {
-  Search,
   Navigation,
   Star,
   User,
@@ -199,25 +198,15 @@ export default function DashboardPage() {
   return (
     <div className="iphone-screen select-none bg-ink">
       {/* Header */}
-      <header ref={headerRef} className="relative z-40 px-5 pt-14 pb-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-surface-elevated flex items-center justify-center border border-line">
-            <User size={19} className="text-text-secondary" />
-          </div>
-          <button
-            onClick={() => setIsOnline(false)}
-            className="inline-flex items-center bg-brand-lime/15 border border-brand-lime/40 px-4 py-1.5 rounded-full press"
-          >
-            <span className="text-xs font-semibold text-brand-lime-dark">Online</span>
-          </button>
-        </div>
-        <button
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-raised border border-line text-text-primary press"
-          aria-label="Search"
-        >
-          <Search size={19} />
-        </button>
-      </header>
+      {/* Floating online status — no bar, just the toggle over the map */}
+      <button
+        ref={headerRef}
+        onClick={() => setIsOnline(false)}
+        className="absolute top-14 left-5 z-40 inline-flex items-center bg-surface-raised border border-line px-4 py-2 rounded-full shadow-card"
+        aria-label="Go offline"
+      >
+        <span className="text-xs font-semibold text-brand-lime-dark">Online</span>
+      </button>
 
       <main className="relative w-full flex-1 min-h-0 overflow-hidden">
         {/* Map */}
