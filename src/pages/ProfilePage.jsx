@@ -121,7 +121,7 @@ export default function ProfilePage() {
   const current = editing ? editForm : profile;
 
   return (
-    <div className="iphone-screen page-wipe overflow-y-auto bg-ink">
+    <div className="iphone-screen overflow-y-auto bg-ink">
       <PageHeader
         title="Profile"
         right={
@@ -129,7 +129,7 @@ export default function ProfilePage() {
             <button
               onClick={handleEditStart}
               aria-label="Edit profile"
-              className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime transition-all press hover:bg-surface-bright"
+              className="w-10 h-10 rounded-full bg-surface-raised border border-line flex items-center justify-center text-text-primary"
             >
               <Settings size={18} />
             </button>
@@ -137,7 +137,7 @@ export default function ProfilePage() {
             <button
               onClick={handleEditCancel}
               aria-label="Cancel edit"
-              className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-text-secondary transition-all press hover:bg-surface-bright"
+              className="w-10 h-10 rounded-full bg-surface-raised border border-line flex items-center justify-center text-text-secondary"
             >
               <X size={18} />
             </button>
@@ -148,8 +148,8 @@ export default function ProfilePage() {
       {/* Saved Notification */}
       {saved && (
         <div className="fixed top-20 left-4 right-4 z-50">
-          <div className="glass-surface-strong border border-brand-lime/30 rounded-2xl px-4 py-3 flex items-center gap-3">
-            <CheckCircle size={18} className="text-brand-lime" />
+          <div className="bg-surface-raised border border-line rounded-2xl px-4 py-3 flex items-center gap-3 shadow-card">
+            <CheckCircle size={18} className="text-ok" />
             <span className="text-sm font-semibold text-brand-lime-dark">Profile saved successfully!</span>
           </div>
         </div>
@@ -160,10 +160,10 @@ export default function ProfilePage() {
         <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-6 flex flex-col items-center">
           <div className="relative group">
             <div
-              className={`w-24 h-24 rounded-2xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all duration-300 cursor-pointer ${
+              className={`w-24 h-24 rounded-2xl border border-line flex items-center justify-center overflow-hidden cursor-pointer ${
                 current.companyLogo
                   ? 'border-brand-lime bg-surface-elevated'
-                  : 'border-line-strong bg-surface-elevated hover:border-brand-lime'
+                  : 'border-line bg-surface-elevated'
               }`}
               onClick={triggerLogoUpload}
             >
@@ -185,14 +185,14 @@ export default function ProfilePage() {
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
               <button
                 onClick={triggerLogoUpload}
-                className="w-9 h-9 rounded-full bg-brand-lime text-[#FFFFFF] flex items-center justify-center  hover:brightness-110 press transition-all"
+                className="w-9 h-9 rounded-full bg-brand-lime text-[#201F1C] flex items-center justify-center"
               >
                 <Camera size={16} />
               </button>
               {current.companyLogo && (
                 <button
                   onClick={removeLogo}
-                  className="w-9 h-9 rounded-full bg-danger/20 text-danger flex items-center justify-center shadow-lg hover:bg-danger/40 press transition-all"
+                  className="w-9 h-9 rounded-full bg-danger/15 text-danger flex items-center justify-center"
                 >
                   <X size={16} />
                 </button>
@@ -209,10 +209,10 @@ export default function ProfilePage() {
           </div>
 
           <p className="text-text-primary font-bold text-lg mt-5">{current.driverName}</p>
-          <p className="text-[11px] font-medium text-text-muted uppercase tracking-wider mt-1">{current.companyName}</p>
+          <p className="text-sm text-text-secondary mt-1">{current.companyName}</p>
 
           <p className="text-[11px] font-medium text-text-muted mt-4">
-            Tap the logo area or camera icon to upload
+            Tap the logo area or camera icon to upload a company logo
           </p>
         </section>
 
@@ -220,7 +220,7 @@ export default function ProfilePage() {
         <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line overflow-hidden divide-y divide-line">
           <div className="p-5">
             <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
-              <Building2 size={12} className="text-brand-lime" />
+              <Building2 size={12} className="text-text-muted" />
               Company Name
             </p>
             {editing ? (
@@ -228,7 +228,7 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.companyName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, companyName: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime"
                 placeholder="Your company name"
               />
             ) : (
@@ -238,7 +238,7 @@ export default function ProfilePage() {
 
           <div className="p-5">
             <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
-              <User size={12} className="text-brand-lime" />
+              <User size={12} className="text-text-muted" />
               Driver Name
             </p>
             {editing ? (
@@ -246,7 +246,7 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.driverName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, driverName: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime"
                 placeholder="Your name"
               />
             ) : (
@@ -256,7 +256,7 @@ export default function ProfilePage() {
 
           <div className="p-5">
             <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
-              <Mail size={12} className="text-brand-lime" />
+              <Mail size={12} className="text-text-muted" />
               Email
             </p>
             {editing ? (
@@ -264,7 +264,7 @@ export default function ProfilePage() {
                 type="email"
                 value={editForm.email}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, email: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime"
                 placeholder="email@example.com"
               />
             ) : (
@@ -274,7 +274,7 @@ export default function ProfilePage() {
 
           <div className="p-5">
             <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
-              <Info size={12} className="text-brand-lime" />
+              <Info size={12} className="text-text-muted" />
               Phone
             </p>
             {editing ? (
@@ -282,7 +282,7 @@ export default function ProfilePage() {
                 type="tel"
                 value={editForm.phone}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, phone: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime"
                 placeholder="(555) 000-0000"
               />
             ) : (
@@ -296,10 +296,10 @@ export default function ProfilePage() {
           <button
             onClick={handleEditSave}
             disabled={saving}
-            className={`w-full py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${
+            className={`w-full h-14 rounded-full font-display font-bold text-lg flex items-center justify-center gap-2 ${
               saving
-                ? 'bg-brand-lime/50 text-[#FFFFFF]/50 cursor-not-allowed'
-                : 'btn-lime press'
+                ? 'bg-brand-lime/50 text-[#201F1C]/50 cursor-not-allowed'
+                : 'btn-lime'
             }`}
           >
             <Save size={20} />
@@ -313,7 +313,7 @@ export default function ProfilePage() {
         <section className="bg-surface-raised/60 border border-line rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Shield size={16} className="text-brand-lime" />
+              <Shield size={16} className="text-text-muted" />
               <span className="text-xs font-medium text-text-secondary">App Info</span>
             </div>
           </div>
@@ -324,7 +324,7 @@ export default function ProfilePage() {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-xs font-medium text-text-muted">App</span>
-              <span className="text-xs font-medium text-text-secondary">RescueFlow</span>
+              <span className="text-xs font-medium text-text-secondary">RESQ Business</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-xs font-medium text-text-muted">Company Key</span>
@@ -336,7 +336,7 @@ export default function ProfilePage() {
         {/* Settings Row / Logout */}
         <button
           onClick={handleLogout}
-          className="w-full bg-surface-raised border border-line rounded-2xl px-5 py-4 flex items-center justify-between text-danger font-bold press transition-all hover:bg-surface-elevated"
+          className="w-full bg-surface-raised border border-line rounded-2xl px-5 py-4 flex items-center justify-between text-danger font-semibold"
         >
           <span className="flex items-center gap-3">
             <LogOut size={20} />
