@@ -17,17 +17,12 @@ export default function PageHeader({ title, subtitle, right, onBack, code }) {
           </button>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              {code && (
-                <span className="font-mono text-[9px] text-brand-lime tracking-[0.2em]">
-                  {code}
-                </span>
-              )}
               <h1 className="font-display text-[17px] font-bold text-text-primary tracking-tight truncate leading-tight">
                 {title}
               </h1>
             </div>
             {subtitle && (
-              <p className="font-mono text-[10px] text-text-muted uppercase tracking-[0.18em] truncate">
+              <p className="text-[11px] font-medium text-text-muted uppercase tracking-[0.18em] truncate">
                 {subtitle}
               </p>
             )}

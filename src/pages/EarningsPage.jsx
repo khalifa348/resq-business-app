@@ -27,22 +27,22 @@ export default function EarningsPage() {
         <section className="grid grid-cols-1 gap-4">
           <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line hairline-top p-6 relative overflow-hidden">
             <div className="relative z-10">
-              <p className="font-mono text-xs text-text-secondary uppercase tracking-wider">
+              <p className="text-xs font-medium text-text-secondary">
                 Total Earnings (Today)
               </p>
               <div className="flex items-end justify-between mt-2">
-                <h2 className="font-display text-4xl font-bold text-gradient-lime">$420.50</h2>
+                <h2 className="font-display text-4xl font-bold text-text-primary">$420.50</h2>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-8">
                 <div className="flex flex-col gap-1">
-                  <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">
+                  <p className="text-[11px] font-medium text-text-muted">
                     Jobs Completed
                   </p>
                   <p className="text-2xl font-bold text-text-primary">08</p>
                 </div>
                 <div className="flex flex-col gap-1 border-l border-line pl-4">
-                  <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">
+                  <p className="text-[11px] font-medium text-text-muted">
                     Online Hours
                   </p>
                   <p className="text-2xl font-bold text-text-primary">
@@ -56,14 +56,14 @@ export default function EarningsPage() {
 
         {/* Weekly Performance */}
         <section className="space-y-3">
-          <h3 className="font-mono text-xs text-text-secondary px-1 uppercase tracking-wider">
+          <h3 className="text-xs font-medium text-text-secondary px-1">
             Weekly Performance
           </h3>
           <div className="flex overflow-x-auto gap-3 pb-2 no-scrollbar">
             {WEEKLY_DATA.map((item) => (
               <div key={item.day} className="flex-shrink-0 w-16 flex flex-col items-center gap-3">
                 <span
-                  className={`text-[10px] font-mono ${
+                  className={`text-[10px] font-medium ${
                     item.active ? 'text-brand-lime' : 'text-text-muted'
                   }`}
                 >
@@ -82,7 +82,7 @@ export default function EarningsPage() {
                   )}
                 </div>
                 <span
-                  className={`text-[11px] font-mono ${
+                  className={`text-[11px] font-medium ${
                     item.active ? 'text-brand-lime font-bold' : 'text-text-secondary'
                   }`}
                 >
@@ -96,10 +96,10 @@ export default function EarningsPage() {
         {/* Recent Jobs */}
         <section className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="font-mono text-xs text-text-secondary uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-text-secondary">
               Recent Jobs
             </h3>
-            <button className="text-brand-lime font-mono text-[10px] hover:underline transition-all">
+            <button className="text-brand-lime text-[11px] font-medium hover:underline transition-all">
               View All
             </button>
           </div>
@@ -116,11 +116,11 @@ export default function EarningsPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-bold text-text-primary truncate">{job.name}</p>
-                    <div className="flex items-center gap-2 text-[10px] font-mono text-text-muted">
+                    <div className="flex items-center gap-2 text-[10px] font-medium text-text-muted">
                       <span>{job.time}</span>
                       <span className="w-1 h-1 rounded-full bg-line-strong" />
                       <span>{job.distance}</span>
-                      <span className="ml-2 px-1.5 py-0.5 rounded-full bg-brand-lime/10 text-brand-lime text-[10px] uppercase tracking-wider">
+                      <span className="ml-2 px-1.5 py-0.5 rounded-full bg-ok/10 text-ok text-[10px] font-medium">
                         {job.status}
                       </span>
                     </div>

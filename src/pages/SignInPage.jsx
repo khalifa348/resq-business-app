@@ -64,7 +64,7 @@ export default function SignInPage() {
       <main className="relative z-10 flex-1 flex flex-col px-6 pb-8 overflow-y-auto no-scrollbar">
         {/* Heading */}
         <div className="mt-4 mb-8">
-          <span className="text-brand-lime-dark text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
+          <span className="text-brand-lime-dark text-[10px] font-medium uppercase tracking-[0.3em] font-bold">
             AUTH · SIGN IN
           </span>
           <h1 className="font-display font-bold tracking-tight text-4xl text-text-primary leading-tight mt-2">
@@ -80,7 +80,7 @@ export default function SignInPage() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email */}
             <div className="space-y-2">
-              <label className="kicker" htmlFor="email">
+              <label className="text-[11px] font-medium text-text-secondary" htmlFor="email">
                 Email
               </label>
               <div className="relative flex items-center bg-surface-elevated border border-line rounded-xl px-4 transition-all input-glow">
@@ -100,7 +100,7 @@ export default function SignInPage() {
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="kicker" htmlFor="password">
+              <label className="text-[11px] font-medium text-text-secondary" htmlFor="password">
                 Password
               </label>
               <div className="relative flex items-center bg-surface-elevated border border-line rounded-xl px-4 transition-all input-glow">

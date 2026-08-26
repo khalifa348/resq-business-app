@@ -90,7 +90,7 @@ export default function CompanyKeyPage() {
         <div className="mb-8 text-center">
           <span className="text-brand-lime-dark text-[11px] font-semibold uppercase tracking-wide">Company key</span>
           <div className="flex justify-center mb-6 mt-2">
-            <div className="w-20 h-20 clip-notch bg-brand-lime/10 border border-line flex items-center justify-center">
+            <div className="w-20 h-20 rounded-2xl bg-brand-lime/10 border border-line flex items-center justify-center">
               <ShieldCheck size={44} className="text-brand-lime" />
             </div>
           </div>

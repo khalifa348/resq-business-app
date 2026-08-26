@@ -51,8 +51,8 @@ export default function MessagePage() {
       <div className="flex-1 overflow-y-auto px-4 pt-20 pb-4 flex flex-col gap-4">
         {/* Date Separator */}
         <div className="flex justify-center">
-          <span className="bg-surface-elevated px-3 py-1 rounded-full font-mono text-[11px] text-text-secondary tracking-wider">
-            TODAY, 14:22
+          <span className="bg-surface-elevated px-3 py-1 rounded-full text-[11px] font-medium text-text-secondary">
+            Today · 14:22
           </span>
         </div>
 
@@ -72,7 +72,7 @@ export default function MessagePage() {
             >
               {msg.text}
             </div>
-            <span className="font-mono text-[10px] text-text-muted mt-1 px-1">
+            <span className="text-[11px] font-medium text-text-muted mt-1 px-1">
               {msg.time}
             </span>
           </div>

@@ -48,14 +48,14 @@ export default function SignUpPage() {
       <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
         {/* Header */}
         <header className="mb-8">
-          <span className="text-brand-lime text-[10px] font-mono uppercase tracking-[0.3em]">AUTH · CREATE ACCOUNT</span>
+          <span className="text-brand-lime text-[10px] font-medium uppercase tracking-[0.3em]">AUTH · CREATE ACCOUNT</span>
           <h1 className="font-display text-5xl font-bold tracking-tight text-brand-lime leading-tight mt-1">
             <span className="custom-underline">Sign up</span>
           </h1>
         </header>
 
         {/* Sign Up Form */}
-        <div className="glass-surface rounded-3xl clip-notch p-6 card-inset">
+        <div className="glass-surface rounded-3xl p-6 card-inset">
           <form className="space-y-8" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div className="space-y-2">

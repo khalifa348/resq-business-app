@@ -34,19 +34,19 @@ export default function JobsPage() {
         {/* Summary Cards */}
         <section className="grid grid-cols-2 gap-3">
           <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
-            <span className="kicker">Total Revenue</span>
-            <h2 className="num-led text-3xl text-gradient-lime mt-1">${totalEarnings.toFixed(2)}</h2>
+            <span className="text-[11px] font-medium text-text-secondary">Total Revenue</span>
+            <h2 className="num-led text-3xl text-text-primary mt-1">${totalEarnings.toFixed(2)}</h2>
             <div className="flex items-center gap-1 mt-2">
               <DollarSign size={12} className="text-brand-lime-dim" />
-              <span className="font-mono text-[10px] text-text-muted">All time earnings</span>
+              <span className="text-[11px] font-medium text-text-muted">All time earnings</span>
             </div>
           </div>
           <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line p-5">
-            <span className="kicker">Jobs Done</span>
+            <span className="text-[11px] font-medium text-text-secondary">Jobs Done</span>
             <h2 className="num-led text-3xl text-text-primary mt-1">{ALL_JOBS.length}</h2>
             <div className="flex items-center gap-1 mt-2">
               <CheckCircle size={12} className="text-brand-lime-dim" />
-              <span className="font-mono text-[10px] text-text-muted">Completed jobs</span>
+              <span className="text-[11px] font-medium text-text-muted">Completed jobs</span>
             </div>
           </div>
         </section>
@@ -60,7 +60,7 @@ export default function JobsPage() {
               </div>
               <div>
                 <p className="num-led text-xl text-text-primary">{avgRating}</p>
-                <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Average Rating</p>
+                <p className="text-[11px] font-medium text-text-muted">Average Rating</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function JobsPage() {
         <section className="space-y-3">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-text-primary">All Completed Jobs</h3>
-            <span className="font-mono text-[10px] text-text-muted">{ALL_JOBS.length} total</span>
+            <span className="text-[11px] font-medium text-text-muted">{ALL_JOBS.length} total</span>
           </div>
 
           <div className="space-y-3">
@@ -100,10 +100,10 @@ export default function JobsPage() {
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <div className="flex items-center gap-1">
                           <Star size={10} className="text-brand-lime fill-brand-lime/50" />
-                          <span className="text-[10px] font-mono text-text-secondary">{job.rating}</span>
+                          <span className="text-[10px] font-medium text-text-secondary">{job.rating}</span>
                         </div>
                         <span className="w-1 h-1 rounded-full bg-line-strong" />
-                        <span className="text-[10px] font-mono text-text-muted">{job.type}</span>
+                        <span className="text-[10px] font-medium text-text-muted">{job.type}</span>
                       </div>
                     </div>
                   </div>
@@ -113,11 +113,11 @@ export default function JobsPage() {
                 <div className="flex items-center gap-4 mt-2 pl-[52px]">
                   <div className="flex items-center gap-1">
                     <Clock size={10} className="text-text-muted" />
-                    <span className="text-[10px] font-mono text-text-muted">{job.date} {job.time}</span>
+                    <span className="text-[10px] font-medium text-text-muted">{job.date} {job.time}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <MapPin size={10} className="text-text-muted" />
-                    <span className="text-[10px] font-mono text-text-muted">{job.distance}</span>
+                    <span className="text-[10px] font-medium text-text-muted">{job.distance}</span>
                   </div>
                   <span className="ml-auto px-2 py-0.5 rounded-full bg-ok/10 text-ok text-[10px] font-medium uppercase tracking-wide">
                     {job.status}
@@ -125,9 +125,9 @@ export default function JobsPage() {
                 </div>
 
                 <div className="mt-2 pl-[52px] flex items-center gap-2">
-                  <span className="text-[10px] font-mono text-text-muted">{job.vehicle}</span>
+                  <span className="text-[10px] font-medium text-text-muted">{job.vehicle}</span>
                   <span className="w-px h-3 bg-line" />
-                  <span className="text-[10px] font-mono text-text-muted uppercase">{job.plate}</span>
+                  <span className="text-[10px] font-medium text-text-muted uppercase">{job.plate}</span>
                 </div>
               </div>
             ))}

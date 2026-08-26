@@ -85,7 +85,7 @@ export default function CallPage() {
           <div className="mt-8 text-center">
             <span className="text-brand-lime-dark text-[11px] font-semibold uppercase tracking-wide">Active call</span>
             <h1 className="font-display text-2xl font-bold text-text-primary mt-1">Lennert Nijenbijvank</h1>
-            <p className="font-mono text-sm text-text-secondary flex items-center justify-center gap-2 mt-2">
+            <p className="text-sm text-text-secondary flex items-center justify-center gap-2 mt-2">
               <span>Mobile</span>
               <span className="w-1 h-1 bg-line rounded-full" />
               <span className="text-brand-lime font-bold">{timerStr}</span>
@@ -123,7 +123,7 @@ export default function CallPage() {
                   )}
                 </div>
                 <span
-                  className={`font-mono text-[10px] ${
+                  className={`text-[11px] font-medium ${
                     isActive ? 'text-brand-lime' : 'text-text-secondary'
                   }`}
                 >
@@ -154,7 +154,7 @@ export default function CallPage() {
       {/* Call Indicator */}
       <div className="fixed top-12 left-1/2 -translate-x-1/2 px-4 py-1.5 glass-surface rounded-full flex items-center gap-2 z-20">
         <div className="w-2 h-2 bg-brand-lime rounded-full animate-pulse" />
-        <span className="font-mono text-xs text-text-primary">Ongoing Service Call</span>
+        <span className="text-xs font-medium text-text-primary">Ongoing Service Call</span>
       </div>
     </div>
   );

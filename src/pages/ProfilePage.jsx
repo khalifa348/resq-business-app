@@ -150,7 +150,7 @@ export default function ProfilePage() {
         <div className="fixed top-20 left-4 right-4 z-50">
           <div className="glass-surface-strong border border-brand-lime/30 rounded-2xl px-4 py-3 flex items-center gap-3">
             <CheckCircle size={18} className="text-brand-lime" />
-            <span className="font-mono text-sm text-brand-lime">Profile saved successfully!</span>
+            <span className="text-sm font-semibold text-brand-lime-dark">Profile saved successfully!</span>
           </div>
         </div>
       )}
@@ -209,9 +209,9 @@ export default function ProfilePage() {
           </div>
 
           <p className="text-text-primary font-bold text-lg mt-5">{current.driverName}</p>
-          <p className="font-mono text-[11px] text-text-muted uppercase tracking-wider mt-1">{current.companyName}</p>
+          <p className="text-[11px] font-medium text-text-muted uppercase tracking-wider mt-1">{current.companyName}</p>
 
-          <p className="font-mono text-[10px] text-text-muted mt-4">
+          <p className="text-[11px] font-medium text-text-muted mt-4">
             Tap the logo area or camera icon to upload
           </p>
         </section>
@@ -219,7 +219,7 @@ export default function ProfilePage() {
         {/* Profile Details Card */}
         <section className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line overflow-hidden divide-y divide-line">
           <div className="p-5">
-            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
               <Building2 size={12} className="text-brand-lime" />
               Company Name
             </p>
@@ -228,7 +228,7 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.companyName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, companyName: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="Your company name"
               />
             ) : (
@@ -237,7 +237,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="p-5">
-            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
               <User size={12} className="text-brand-lime" />
               Driver Name
             </p>
@@ -246,7 +246,7 @@ export default function ProfilePage() {
                 type="text"
                 value={editForm.driverName}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, driverName: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="Your name"
               />
             ) : (
@@ -255,7 +255,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="p-5">
-            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
               <Mail size={12} className="text-brand-lime" />
               Email
             </p>
@@ -264,16 +264,16 @@ export default function ProfilePage() {
                 type="email"
                 value={editForm.email}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, email: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="email@example.com"
               />
             ) : (
-              <p className="text-text-secondary text-sm font-mono">{current.email}</p>
+              <p className="text-text-secondary text-sm">{current.email}</p>
             )}
           </div>
 
           <div className="p-5">
-            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <p className="text-[11px] font-medium text-text-muted mb-2 flex items-center gap-1.5">
               <Info size={12} className="text-brand-lime" />
               Phone
             </p>
@@ -282,11 +282,11 @@ export default function ProfilePage() {
                 type="tel"
                 value={editForm.phone}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, phone: e.target.value }))}
-                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base font-mono focus:outline-none focus:border-brand-lime transition-colors"
+                className="w-full bg-surface-elevated border border-line rounded-xl px-3 py-2 text-text-primary font-bold text-base focus:outline-none focus:border-brand-lime transition-colors"
                 placeholder="(555) 000-0000"
               />
             ) : (
-              <p className="text-text-secondary text-sm font-mono">{current.phone}</p>
+              <p className="text-text-secondary text-sm">{current.phone}</p>
             )}
           </div>
         </section>
@@ -303,8 +303,8 @@ export default function ProfilePage() {
             }`}
           >
             <Save size={20} />
-            <span className="font-mono text-[14px] tracking-[0.05em]">
-              {saving ? 'SAVING...' : 'SAVE PROFILE'}
+            <span className="text-[15px] font-semibold">
+              {saving ? 'Saving…' : 'Save profile'}
             </span>
           </button>
         )}
@@ -314,21 +314,21 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Shield size={16} className="text-brand-lime" />
-              <span className="font-mono text-xs text-text-secondary uppercase tracking-wider">App Info</span>
+              <span className="text-xs font-medium text-text-secondary">App Info</span>
             </div>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-text-muted">Version</span>
-              <span className="font-mono text-[12px] text-brand-lime">v{APP_VERSION}</span>
+              <span className="text-xs font-medium text-text-muted">Version</span>
+              <span className="text-xs font-semibold text-brand-lime-dark">v{APP_VERSION}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-text-muted">App</span>
-              <span className="font-mono text-[12px] text-text-secondary">RescueFlow</span>
+              <span className="text-xs font-medium text-text-muted">App</span>
+              <span className="text-xs font-medium text-text-secondary">RescueFlow</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-mono text-[12px] text-text-muted">Company Key</span>
-              <span className="font-mono text-[12px] text-text-secondary">RF-TOW-001</span>
+              <span className="text-xs font-medium text-text-muted">Company Key</span>
+              <span className="text-xs font-medium text-text-secondary">RF-TOW-001</span>
             </div>
           </div>
         </section>
