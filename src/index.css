@@ -540,17 +540,17 @@ body {
 
 /* ============ RESCUE OPS — v2.1 Personality Layer ============ */
 
-/* Display type: Space Grotesk for headings */
+/* Display type: native iOS system font */
 body, .font-display {
-  font-family: 'Space Grotesk', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 .font-mono {
-  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace !important;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace !important;
 }
 
 /* Tabular LED numerals for money / stats */
 .num-led {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
@@ -558,7 +558,7 @@ body, .font-display {
 
 /* Kicker label — mono, uppercase, ops feel (no slash prefix) */
 .kicker {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -624,7 +624,7 @@ button:active, a:active { filter: none !important; transform: none !important; }
 
 /* Stencil watermark wordmark */
 .stencil-mark {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   font-weight: 800;
   color: transparent;
   -webkit-text-stroke: 1px rgba(168, 194, 86, 0.10);

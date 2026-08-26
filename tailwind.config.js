@@ -82,15 +82,15 @@ export default {
       },
       fontFamily: {
         display: [
-          'Space Grotesk', 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont',
-          'Inter', 'Segoe UI', 'Roboto', 'sans-serif',
+          '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text',
+          'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif',
         ],
         sans: [
           '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text',
-          'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif',
+          'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif',
         ],
         mono: [
-          'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Menlo', 'Consolas', 'monospace',
+          'ui-monospace', 'SF Mono', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace',
         ],
       },
       boxShadow: {
