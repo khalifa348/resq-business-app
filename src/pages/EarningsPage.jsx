@@ -17,76 +17,50 @@ const RECENT_JOBS = [
 
 export default function EarningsPage() {
   return (
-    <div className="iphone-screen page-wipe bg-ink">
+    <div className="iphone-screen bg-ink">
       <PageHeader
         title="Earnings"
       />
 
-      <main className="pt-20 px-4 pb-32 space-y-6 overflow-y-auto flex-1">
+      <main className="pt-20 px-4 pb-32 space-y-5 overflow-y-auto flex-1">
         {/* Summary Card */}
-        <section className="grid grid-cols-1 gap-4">
-          <div className="bg-surface-raised rounded-3xl shadow-card card-inset border border-line hairline-top p-6 relative overflow-hidden">
-            <div className="relative z-10">
-              <p className="text-xs font-medium text-text-secondary">
-                Total Earnings (Today)
-              </p>
-              <div className="flex items-end justify-between mt-2">
-                <h2 className="font-display text-4xl font-bold text-text-primary">$420.50</h2>
-              </div>
+        <section className="bg-surface-raised rounded-3xl border border-line p-6">
+          <p className="text-xs font-medium text-text-secondary">
+            Total earnings today
+          </p>
+          <h2 className="font-display text-4xl font-bold text-text-primary mt-2">$420.50</h2>
 
-              <div className="grid grid-cols-2 gap-4 mt-8">
-                <div className="flex flex-col gap-1">
-                  <p className="text-[11px] font-medium text-text-muted">
-                    Jobs Completed
-                  </p>
-                  <p className="text-2xl font-bold text-text-primary">08</p>
-                </div>
-                <div className="flex flex-col gap-1 border-l border-line pl-4">
-                  <p className="text-[11px] font-medium text-text-muted">
-                    Online Hours
-                  </p>
-                  <p className="text-2xl font-bold text-text-primary">
-                    6.5<span className="text-base font-normal text-text-secondary">h</span>
-                  </p>
-                </div>
-              </div>
+          <div className="grid grid-cols-2 gap-4 mt-7 pt-5 border-t border-line">
+            <div className="flex flex-col gap-1">
+              <p className="text-[11px] font-medium text-text-muted">Jobs completed</p>
+              <p className="text-2xl font-bold text-text-primary">08</p>
+            </div>
+            <div className="flex flex-col gap-1 border-l border-line pl-4">
+              <p className="text-[11px] font-medium text-text-muted">Online hours</p>
+              <p className="text-2xl font-bold text-text-primary">
+                6.5<span className="text-base font-normal text-text-secondary">h</span>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Weekly Performance */}
-        <section className="space-y-3">
-          <h3 className="text-xs font-medium text-text-secondary px-1">
-            Weekly Performance
-          </h3>
-          <div className="flex overflow-x-auto gap-3 pb-2 no-scrollbar">
+        {/* This Week */}
+        <section className="bg-surface-raised rounded-3xl border border-line p-5">
+          <h3 className="text-sm font-semibold text-text-primary mb-4">This week</h3>
+          <div className="space-y-3.5">
             {WEEKLY_DATA.map((item) => (
-              <div key={item.day} className="flex-shrink-0 w-16 flex flex-col items-center gap-3">
-                <span
-                  className={`text-[10px] font-medium ${
-                    item.active ? 'text-brand-lime' : 'text-text-muted'
-                  }`}
-                >
-                  {item.day}
-                </span>
-                <div className="w-[2px] h-16 bg-surface-elevated rounded-full relative">
+              <div key={item.day} className="flex items-center gap-4">
+                <span className="w-9 text-xs font-semibold text-text-secondary">{item.day}</span>
+                <div className="flex-1 h-2 bg-surface-elevated rounded-full overflow-hidden">
                   {item.earnings !== null && (
                     <div
-                      className={`absolute bottom-0 w-full rounded-full transition-all duration-500 ${
-                        item.active
-                          ? 'bg-brand-lime '
-                          : 'bg-surface-elevated'
-                      }`}
-                      style={{ height: `${item.height}%` }}
+                      className={`h-full rounded-full ${item.active ? 'bg-brand-lime' : 'bg-line-strong'}`}
+                      style={{ width: `${item.height}%` }}
                     />
                   )}
                 </div>
-                <span
-                  className={`text-[11px] font-medium ${
-                    item.active ? 'text-brand-lime font-bold' : 'text-text-secondary'
-                  }`}
-                >
-                  {item.earnings !== null ? `$${item.earnings}` : '-'}
+                <span className={`w-12 text-right text-sm font-semibold ${item.active ? 'text-brand-lime-dark' : 'text-text-primary'}`}>
+                  {item.earnings !== null ? `$${item.earnings}` : '—'}
                 </span>
               </div>
             ))}
@@ -96,11 +70,11 @@ export default function EarningsPage() {
         {/* Recent Jobs */}
         <section className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-xs font-medium text-text-secondary">
-              Recent Jobs
+            <h3 className="text-sm font-semibold text-text-primary">
+              Recent jobs
             </h3>
-            <button className="text-brand-lime text-[11px] font-medium hover:underline transition-all">
-              View All
+            <button className="text-brand-lime-dark text-sm font-semibold">
+              View all
             </button>
           </div>
 
@@ -108,10 +82,10 @@ export default function EarningsPage() {
             {RECENT_JOBS.map((job, i) => (
               <div
                 key={i}
-                className="bg-surface-raised/60 p-4 rounded-2xl border border-line flex items-center justify-between hover:bg-surface-elevated transition-all group"
+                className="bg-surface-raised/60 p-4 rounded-2xl border border-line flex items-center justify-between"
               >
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime/70 group-hover:text-brand-lime transition-colors shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-line flex items-center justify-center text-brand-lime/50 shrink-0">
                     <CheckCircle size={20} />
                   </div>
                   <div className="min-w-0">
