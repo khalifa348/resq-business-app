@@ -27,8 +27,9 @@ export default function WelcomePage() {
       >
         <source src={isNight ? '/videos/night.mp4' : '/videos/morning.mp4'} type="video/mp4" />
       </video>
-      {/* Readability scrim — clear at top, solid over the actions */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/70" />
+      {/* Readability scrim — dims the video to match the dark theme */}
+      <div className="absolute inset-0 bg-ink/45" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/80" />
 
       <BackgroundQ />
 
