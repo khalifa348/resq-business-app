@@ -13,7 +13,7 @@ export default function WelcomePage() {
   return (
     <div
       className="iphone-screen page-wipe"
-      style={{ backgroundColor: '#F5F5F2' }}
+      style={{ backgroundColor: '#0E100C' }}
     >
       {/* Cinematic night-drive backdrop */}
       <video
@@ -33,7 +33,7 @@ export default function WelcomePage() {
       <BackgroundQ />
 
       <main className="relative z-10 flex-1 px-6 flex flex-col justify-between min-h-0 pt-24 pb-10">
-        <WelcomeHeader lightText={isNight} />
+        <WelcomeHeader lightText />
         <ActionContainer />
       </main>
     </div>
