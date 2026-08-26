@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Loader2 } from 'lucide-react';
-import BackgroundQ from '../components/BackgroundQ';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 
 // Company key accepted locally (Supabase disconnected)
 
@@ -81,70 +80,69 @@ export default function CompanyKeyPage() {
   };
 
   return (
-    <div className="iphone-screen page-wipe bg-ink relative">
-      <BackgroundQ />
-      <div className="grain-overlay" />
+    <div className="iphone-screen bg-ink">
+      {/* Top bar */}
+      <header className="px-4 pt-14 flex items-center">
+        <button
+          onClick={() => navigate(-1)}
+          aria-label="Back"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-raised border border-line text-text-primary"
+        >
+          <ArrowLeft size={20} />
+        </button>
+      </header>
 
-      <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="flex justify-center mb-6 mt-2">
-            <div className="w-20 h-20 rounded-2xl bg-brand-lime/10 border border-line flex items-center justify-center">
-              <ShieldCheck size={44} className="text-brand-lime-dark" />
-            </div>
-          </div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-text-primary leading-tight">
-            Company Key
+      <main className="flex-1 flex flex-col px-6 pt-10 pb-10 overflow-y-auto no-scrollbar">
+        {/* Heading */}
+        <div className="mb-9">
+          <h1 className="font-display font-bold tracking-tight text-3xl text-text-primary leading-tight">
+            Company key
           </h1>
-          <p className="text-text-secondary text-sm mt-3 max-w-xs mx-auto">
-            Enter your 6-digit company key to access the app
+          <p className="text-text-secondary text-sm mt-2">
+            Enter the 6-digit key your admin gave you.
           </p>
         </div>
 
         {/* Digit Inputs */}
-        <div className="bg-surface-raised border border-line rounded-3xl p-6">
-          <div className="flex justify-center gap-3 mb-8">
-            {digits.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                onPaste={index === 0 ? handlePaste : undefined}
-                className={`w-12 h-14 text-center text-2xl font-bold font-mono rounded-xl border-2 bg-surface-elevated transition-all focus:outline-none ${
-                  digit
-                    ? 'border-brand-lime-dark text-brand-lime-dark'
-                    : 'border-line text-text-primary focus:border-brand-lime'
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* Error */}
-          {error && (
-            <p className="text-danger text-xs text-center mb-6">{error}</p>
-          )}
-
-          {/* Verify Button */}
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className={`w-full btn-lime rounded-full h-14 font-display font-bold text-lg flex items-center justify-center gap-2 ${
-              loading ? 'opacity-60 cursor-not-allowed' : ''
-            }`}
-          >
-            {loading && <Loader2 size={20} className="animate-spin" />}
-            {loading ? 'Verifying...' : 'Verify & Access'}
-          </button>
-
-          <p className="text-text-muted text-xs text-center mt-6">
-            Access key required — contact your admin
-          </p>
+        <div className="flex gap-3">
+          {digits.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => (inputRefs.current[index] = el)}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              onPaste={index === 0 ? handlePaste : undefined}
+              className={`w-12 h-14 text-center text-2xl font-bold font-mono rounded-xl border-2 bg-surface-raised focus:outline-none ${
+                digit
+                  ? 'border-brand-lime-dark text-brand-lime-dark'
+                  : 'border-line text-text-primary focus:border-brand-lime'
+              }`}
+            />
+          ))}
         </div>
+
+        {/* Error */}
+        {error && <p className="text-danger text-sm mt-5">{error}</p>}
+
+        {/* Verify Button */}
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className={`w-full btn-lime rounded-full h-14 font-display font-bold text-lg flex items-center justify-center gap-2 mt-8 ${
+            loading ? 'opacity-60 cursor-not-allowed' : ''
+          }`}
+        >
+          {loading && <Loader2 size={20} className="animate-spin" />}
+          {loading ? 'Verifying…' : 'Verify & access'}
+        </button>
+
+        <p className="text-text-muted text-xs text-center mt-6">
+          Key required — contact your admin if you don't have one.
+        </p>
       </main>
     </div>
   );
