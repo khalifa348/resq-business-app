@@ -88,13 +88,12 @@ export default function CompanyKeyPage() {
       <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
         {/* Header */}
         <div className="mb-8 text-center">
-          <span className="text-brand-lime-dark text-[11px] font-semibold uppercase tracking-wide">Company key</span>
           <div className="flex justify-center mb-6 mt-2">
             <div className="w-20 h-20 rounded-2xl bg-brand-lime/10 border border-line flex items-center justify-center">
-              <ShieldCheck size={44} className="text-brand-lime" />
+              <ShieldCheck size={44} className="text-brand-lime-dark" />
             </div>
           </div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-brand-lime leading-tight">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-text-primary leading-tight">
             Company Key
           </h1>
           <p className="text-text-secondary text-sm mt-3 max-w-xs mx-auto">
@@ -103,7 +102,7 @@ export default function CompanyKeyPage() {
         </div>
 
         {/* Digit Inputs */}
-        <div className="glass-surface rounded-3xl p-6 card-inset delay-100">
+        <div className="bg-surface-raised border border-line rounded-3xl p-6">
           <div className="flex justify-center gap-3 mb-8">
             {digits.map((digit, index) => (
               <input
@@ -118,7 +117,7 @@ export default function CompanyKeyPage() {
                 onPaste={index === 0 ? handlePaste : undefined}
                 className={`w-12 h-14 text-center text-2xl font-bold font-mono rounded-xl border-2 bg-surface-elevated transition-all focus:outline-none ${
                   digit
-                    ? 'border-brand-lime text-brand-lime shadow-[0_0_12px_rgba(198,242,78,0.30)]'
+                    ? 'border-brand-lime-dark text-brand-lime-dark'
                     : 'border-line text-text-primary focus:border-brand-lime'
                 }`}
               />
@@ -134,7 +133,7 @@ export default function CompanyKeyPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className={`w-full btn-lime rounded-2xl py-3.5 font-bold text-lg transition-all press flex items-center justify-center gap-2 ${
+            className={`w-full btn-lime rounded-full h-14 font-display font-bold text-lg flex items-center justify-center gap-2 ${
               loading ? 'opacity-60 cursor-not-allowed' : ''
             }`}
           >

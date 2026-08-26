@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
-import BackgroundQ from '../components/BackgroundQ';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function SignUpPage() {
@@ -41,135 +40,126 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="iphone-screen page-wipe bg-ink relative">
-      <BackgroundQ />
-      <div className="grain-overlay" />
+    <div className="iphone-screen bg-ink">
+      {/* Top bar */}
+      <header className="px-4 pt-14 flex items-center">
+        <button
+          onClick={() => navigate('/signin')}
+          aria-label="Back"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-raised border border-line text-text-primary"
+        >
+          <ArrowLeft size={20} />
+        </button>
+      </header>
 
-      <main className="relative z-10 flex-grow flex flex-col px-6 pb-12 max-w-md mx-auto w-full pt-24 safe-area-top">
-        {/* Header */}
-        <header className="mb-8">
-          <span className="text-brand-lime text-[10px] font-medium uppercase tracking-[0.3em]">AUTH · CREATE ACCOUNT</span>
-          <h1 className="font-display text-5xl font-bold tracking-tight text-brand-lime leading-tight mt-1">
-            <span className="custom-underline">Sign up</span>
+      <main className="flex-1 flex flex-col px-6 pt-10 pb-10 overflow-y-auto no-scrollbar">
+        {/* Heading */}
+        <div className="mb-9">
+          <h1 className="font-display font-bold tracking-tight text-3xl text-text-primary leading-tight">
+            Create account
           </h1>
-        </header>
+          <p className="text-text-secondary text-sm mt-2">
+            Start working with RESQ in less than a minute.
+          </p>
+        </div>
 
-        {/* Sign Up Form */}
-        <div className="glass-surface rounded-3xl p-6 card-inset">
-          <form className="space-y-8" onSubmit={handleSubmit}>
-            {/* Email Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-text-secondary" htmlFor="email">
-                Email
-              </label>
-              <div className="relative flex items-center border-b border-line-strong pb-2 transition-all input-glow">
-                <Mail size={20} className="text-text-muted mr-3 shrink-0" />
-                <span className="text-text-muted mr-2 select-none">|</span>
-                <input
-                  className="bg-transparent border-none p-0 w-full text-text-primary placeholder-text-muted text-base"
-                  id="email"
-                  name="email"
-                  placeholder="demo@email.com"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
+        {/* Form — flat, native, no card */}
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* Email */}
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-text-primary" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="w-full h-12 bg-surface-raised border border-line rounded-xl px-4 text-base text-text-primary placeholder-text-muted focus:outline-none focus:border-brand-lime input-glow"
+              id="email"
+              name="email"
+              placeholder="name@email.com"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-            {/* Password Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-text-secondary" htmlFor="password">
-                Password
-              </label>
-              <div className="relative flex items-center border-b border-line-strong pb-2 transition-all input-glow">
-                <Lock size={20} className="text-text-muted mr-3 shrink-0" />
-                <span className="text-text-muted mr-2 select-none">|</span>
-                <input
-                  className="bg-transparent border-none p-0 w-full text-text-primary placeholder-text-muted text-base"
-                  id="password"
-                  name="password"
-                  placeholder="enter your password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  className="ml-2 focus:outline-none transition-all press"
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff size={20} className="text-brand-lime" />
-                  ) : (
-                    <Eye size={20} className="text-brand-lime" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm Password Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-text-secondary" htmlFor="confirm-password">
-                Confirm Password
-              </label>
-              <div className="relative flex items-center border-b border-line-strong pb-2 transition-all input-glow">
-                <Lock size={20} className="text-text-muted mr-3 shrink-0" />
-                <span className="text-text-muted mr-2 select-none">|</span>
-                <input
-                  className="bg-transparent border-none p-0 w-full text-text-primary placeholder-text-muted text-base"
-                  id="confirm-password"
-                  name="confirm-password"
-                  placeholder="Confirm your password"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <button
-                  className="ml-2 focus:outline-none transition-all press"
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} className="text-brand-lime" />
-                  ) : (
-                    <Eye size={20} className="text-brand-lime" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Error message */}
-            {error && (
-              <p className="text-danger text-xs text-center">{error}</p>
-            )}
-
-            {/* Create Account Button */}
-            <div className="pt-2">
+          {/* Password */}
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-text-primary" htmlFor="password">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                className="w-full h-12 bg-surface-raised border border-line rounded-xl px-4 pr-16 text-base text-text-primary placeholder-text-muted focus:outline-none focus:border-brand-lime input-glow"
+                id="password"
+                name="password"
+                placeholder="At least 6 characters"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               <button
-                className={`w-full btn-lime rounded-2xl py-3.5 font-bold text-lg transition-all press flex items-center justify-center gap-2 ${
-                  loading ? 'opacity-60 cursor-not-allowed' : ''
-                }`}
-                disabled={loading}
-                type="submit"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-brand-lime-dark"
               >
-                {loading && <Loader2 size={20} className="animate-spin" />}
-                {loading ? 'Creating Account...' : 'Create Account'}
+                {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-          </form>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-text-primary" htmlFor="confirm-password">
+              Confirm password
+            </label>
+            <div className="relative">
+              <input
+                className="w-full h-12 bg-surface-raised border border-line rounded-xl px-4 pr-16 text-base text-text-primary placeholder-text-muted focus:outline-none focus:border-brand-lime input-glow"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="Repeat your password"
+                type={showConfirmPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-brand-lime-dark"
+              >
+                {showConfirmPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && <p className="text-danger text-sm">{error}</p>}
+
+          {/* Submit */}
+          <button
+            className={`w-full btn-lime rounded-full h-14 font-display font-bold text-lg flex items-center justify-center gap-2 ${
+              loading ? 'opacity-60 cursor-not-allowed' : ''
+            }`}
+            disabled={loading}
+            type="submit"
+          >
+            {loading && <Loader2 size={20} className="animate-spin" />}
+            {loading ? 'Creating account…' : 'Create account'}
+          </button>
+        </form>
+
+        {/* Sign in link */}
+        <div className="pt-8 text-center">
+          <p className="text-sm text-text-secondary">
+            Already have an account?{' '}
+            <Link className="text-brand-lime-dark font-bold" to="/signin">
+              Sign in
+            </Link>
+          </p>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="py-10 text-center relative z-10 delay-500">
-        <p className="text-sm text-text-secondary">
-          Already have an Account?{' '}
-          <Link className="text-brand-lime font-bold transition-all hover:underline" to="/signin">
-            Login
-          </Link>
-        </p>
-      </footer>
     </div>
   );
 }
